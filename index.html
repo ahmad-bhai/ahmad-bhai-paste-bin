@@ -3,111 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ahmad Bhai - Pro Pastebin</title>
+    <title>Ahmad Bhai | Paste Bin</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --neon: #00d2ff; --dark: #0b0e14; }
+        :root { --neon: #00d2ff; --bg: #0b0e14; }
         * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; }
-        body { background: var(--dark); color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
-        
-        .card { 
-            width: 100%; max-width: 700px; background: rgba(255,255,255,0.02); 
-            padding: 40px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.1);
-            backdrop-filter: blur(15px); box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        }
-
-        .logo { font-size: 50px; color: var(--neon); text-shadow: 0 0 15px var(--neon); margin-bottom: 10px; }
-        h1 { font-size: 24px; margin-bottom: 30px; letter-spacing: 1px; }
-
-        input, select, textarea {
-            width: 100%; background: rgba(255,255,255,0.05); border: 1px solid #333;
-            color: white; padding: 15px; border-radius: 12px; margin-bottom: 15px; outline: none; transition: 0.3s;
-        }
-        input:focus, textarea:focus { border-color: var(--neon); box-shadow: 0 0 10px rgba(0, 210, 255, 0.2); }
-        
-        textarea { height: 250px; font-family: 'Courier New', monospace; font-size: 14px; }
-
-        .btn {
-            width: 100%; background: linear-gradient(90deg, #00d2ff, #3a7bd5);
-            color: white; border: none; padding: 18px; border-radius: 15px;
-            font-weight: 700; cursor: pointer; transition: 0.3s; font-size: 16px;
-        }
-        .btn:hover { transform: scale(1.02); box-shadow: 0 10px 20px rgba(0, 210, 255, 0.3); }
-
-        .output { 
-            margin-top: 25px; display: none; background: rgba(0, 210, 255, 0.1); 
-            padding: 15px; border-radius: 12px; border: 1px border var(--neon);
-            animation: fadeIn 0.5s ease;
-        }
-        #resLink { color: var(--neon); font-weight: bold; word-break: break-all; }
-        
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        body { background: var(--bg); color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        .card { width: 100%; max-width: 600px; background: rgba(255,255,255,0.03); padding: 30px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); text-align: center; }
+        textarea { width: 100%; height: 200px; background: #161b22; border: 1px solid #333; color: #00ff00; padding: 15px; border-radius: 12px; margin: 15px 0; font-family: monospace; outline: none; }
+        input, select { width: 100%; background: #161b22; border: 1px solid #333; color: white; padding: 12px; border-radius: 10px; margin-bottom: 10px; outline: none; }
+        .btn { width: 100%; background: linear-gradient(90deg, #00d2ff, #3a7bd5); color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; cursor: pointer; }
+        .res-box { margin-top: 20px; padding: 15px; background: rgba(0,255,0,0.1); border: 1px solid #00ff00; border-radius: 10px; display: none; }
+        #toast { position: fixed; bottom: -50px; left: 50%; transform: translateX(-50%); background: #ff4757; color: white; padding: 10px 20px; border-radius: 20px; transition: 0.5s; }
+        #toast.show { bottom: 20px; }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <center>
-        <div class="logo"><i class="fa-solid fa-paste"></i></div>
-        <h1>AHMAD BHAI PASTE</h1>
-    </center>
-
-    <input type="text" id="pTitle" placeholder="Paste Title (Optional)">
+    <i class="fa-solid fa-bolt" style="font-size: 40px; color: var(--neon);"></i>
+    <h1 style="margin-bottom: 20px;">Ahmad Bhai Paste</h1>
     
-    <select id="pFormat">
-        <option value="text">Plain Text</option>
+    <input type="text" id="t" placeholder="Title">
+    <select id="f">
+        <option value="text">Text</option>
         <option value="javascript">JavaScript</option>
-        <option value="php">PHP</option>
-        <option value="python">Python</option>
-        <option value="html5">HTML</option>
     </select>
-
-    <textarea id="pCode" placeholder="Enter your code or text here..."></textarea>
+    <textarea id="c" placeholder="Paste code here..."></textarea>
     
-    <button class="btn" id="subBtn" onclick="sendPaste()">🚀 DEPLOY PASTE</button>
+    <button class="btn" id="b" onclick="go()">🚀 Create Paste</button>
 
-    <div class="output" id="outBox">
-        <p style="font-size: 13px; margin-bottom: 5px;">✅ Generated Link:</p>
-        <a href="#" id="resLink" target="_blank"></a>
+    <div class="res-box" id="rb">
+        <p style="font-size: 12px;">Link Generated:</p>
+        <a href="#" id="rl" target="_blank" style="color: var(--neon); font-weight: bold;"></a>
     </div>
 </div>
 
-<script>
-    async function sendPaste() {
-        const btn = document.getElementById('subBtn');
-        const code = document.getElementById('pCode').value;
-        const title = document.getElementById('pTitle').value;
-        const format = document.getElementById('pFormat').value;
+<div id="toast">Error Notification</div>
 
-        if(!code) return alert("Kuch likho toh sahi, Bhai!");
+<script>
+    async function go() {
+        const btn = document.getElementById('b');
+        const code = document.getElementById('c').value;
+        if(!code) return msg("⚠️ Write something!");
 
         btn.disabled = true;
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
+        btn.innerText = "⏳ Processing...";
 
         try {
             const res = await fetch('/api/paste', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ code, title, format })
+                body: JSON.stringify({ code, title: document.getElementById('t').value, format: document.getElementById('f').value })
             });
-
             const data = await res.json();
-
             if(data.success) {
-                document.getElementById('outBox').style.display = 'block';
-                document.getElementById('resLink').href = data.url;
-                document.getElementById('resLink').innerText = data.url;
-                btn.innerHTML = '✅ SUCCESS';
+                document.getElementById('rb').style.display = 'block';
+                document.getElementById('rl').innerText = data.url;
+                document.getElementById('rl').href = data.url;
+                btn.innerText = "✅ Done";
             } else {
-                alert("Error: " + data.message);
-                btn.innerHTML = '🚀 DEPLOY PASTE';
-                btn.disabled = false;
+                msg("❌ " + data.message);
+                reset(btn);
             }
         } catch (e) {
-            alert("Connection Failed!");
-            btn.disabled = false;
+            msg("❌ Server Connection Error!");
+            reset(btn);
         }
     }
+    function msg(m) { const t = document.getElementById('toast'); t.innerText = m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 3000); }
+    function reset(b) { b.disabled = false; b.innerText = "🚀 Create Paste"; }
 </script>
 </body>
 </html>
