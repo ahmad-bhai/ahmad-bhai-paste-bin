@@ -3,112 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ahmad Bhai - Pro Paste</title>
+    <title>Ahmad Bhai - Pro Pastebin</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --p: #00d2ff; --bg: #0f172a; }
-        * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', sans-serif; }
-        body { background: var(--bg); color: white; display: flex; justify-content: center; padding: 20px; }
+        :root { --neon: #00d2ff; --dark: #0b0e14; }
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; }
+        body { background: var(--dark); color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
         
-        .container { width: 100%; max-width: 800px; background: rgba(255,255,255,0.05); padding: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); }
-        
-        .header { text-align: center; margin-bottom: 25px; }
-        .header i { font-size: 40px; color: var(--p); margin-bottom: 10px; }
-        
-        input, textarea, select {
-            width: 100%; background: #1e293b; border: 1px solid #334155;
-            color: white; padding: 15px; border-radius: 12px; margin-bottom: 15px; outline: none;
+        .card { 
+            width: 100%; max-width: 700px; background: rgba(255,255,255,0.02); 
+            padding: 40px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(15px); box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
-        
-        textarea { height: 300px; font-family: 'Consolas', monospace; resize: none; }
-        
-        .btn-post {
-            width: 100%; background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
-            color: white; border: none; padding: 18px; border-radius: 12px;
-            font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 16px;
-        }
-        .btn-post:hover { transform: translateY(-2px); opacity: 0.9; }
 
-        .result { margin-top: 20px; display: none; background: #059669; padding: 15px; border-radius: 10px; text-align: center; }
-        #pasteUrl { color: white; font-weight: bold; text-decoration: none; }
+        .logo { font-size: 50px; color: var(--neon); text-shadow: 0 0 15px var(--neon); margin-bottom: 10px; }
+        h1 { font-size: 24px; margin-bottom: 30px; letter-spacing: 1px; }
+
+        input, select, textarea {
+            width: 100%; background: rgba(255,255,255,0.05); border: 1px solid #333;
+            color: white; padding: 15px; border-radius: 12px; margin-bottom: 15px; outline: none; transition: 0.3s;
+        }
+        input:focus, textarea:focus { border-color: var(--neon); box-shadow: 0 0 10px rgba(0, 210, 255, 0.2); }
         
-        #toast { position: fixed; bottom: -50px; left: 50%; transform: translateX(-50%); background: #333; padding: 10px 20px; border-radius: 20px; transition: 0.5s; }
-        #toast.show { bottom: 20px; }
+        textarea { height: 250px; font-family: 'Courier New', monospace; font-size: 14px; }
+
+        .btn {
+            width: 100%; background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            color: white; border: none; padding: 18px; border-radius: 15px;
+            font-weight: 700; cursor: pointer; transition: 0.3s; font-size: 16px;
+        }
+        .btn:hover { transform: scale(1.02); box-shadow: 0 10px 20px rgba(0, 210, 255, 0.3); }
+
+        .output { 
+            margin-top: 25px; display: none; background: rgba(0, 210, 255, 0.1); 
+            padding: 15px; border-radius: 12px; border: 1px border var(--neon);
+            animation: fadeIn 0.5s ease;
+        }
+        #resLink { color: var(--neon); font-weight: bold; word-break: break-all; }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="header">
-        <i class="fa-solid fa-code"></i>
-        <h1>Ahmad Bhai Pastebin</h1>
-        <p style="color: #94a3b8;">Create and share your snippets securely</p>
-    </div>
+<div class="card">
+    <center>
+        <div class="logo"><i class="fa-solid fa-paste"></i></div>
+        <h1>AHMAD BHAI PASTE</h1>
+    </center>
 
-    <input type="text" id="title" placeholder="Paste Title (Optional)">
+    <input type="text" id="pTitle" placeholder="Paste Title (Optional)">
     
-    <select id="format">
+    <select id="pFormat">
         <option value="text">Plain Text</option>
         <option value="javascript">JavaScript</option>
+        <option value="php">PHP</option>
         <option value="python">Python</option>
         <option value="html5">HTML</option>
-        <option value="css">CSS</option>
     </select>
 
-    <textarea id="code" placeholder="Paste your code here..."></textarea>
+    <textarea id="pCode" placeholder="Enter your code or text here..."></textarea>
     
-    <button class="btn-post" id="postBtn" onclick="createPaste()">🚀 Create New Paste</button>
+    <button class="btn" id="subBtn" onclick="sendPaste()">🚀 DEPLOY PASTE</button>
 
-    <div class="result" id="resBox">
-        ✅ Paste Created: <a href="#" id="pasteUrl" target="_blank">Click here to view</a>
+    <div class="output" id="outBox">
+        <p style="font-size: 13px; margin-bottom: 5px;">✅ Generated Link:</p>
+        <a href="#" id="resLink" target="_blank"></a>
     </div>
 </div>
 
-<div id="toast"></div>
-
 <script>
-    async function createPaste() {
-        const btn = document.getElementById('postBtn');
-        const code = document.getElementById('code').value;
-        const title = document.getElementById('title').value;
-        const format = document.getElementById('format').value;
+    async function sendPaste() {
+        const btn = document.getElementById('subBtn');
+        const code = document.getElementById('pCode').value;
+        const title = document.getElementById('pTitle').value;
+        const format = document.getElementById('pFormat').value;
 
-        if(!code) return showToast("⚠️ Write something first!");
+        if(!code) return alert("Kuch likho toh sahi, Bhai!");
 
         btn.disabled = true;
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generating...';
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
 
         try {
-            const response = await fetch('/api/paste', {
+            const res = await fetch('/api/paste', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ code, title, format })
             });
 
-            const data = await response.json();
+            const data = await res.json();
 
             if(data.success) {
-                document.getElementById('resBox').style.display = 'block';
-                document.getElementById('pasteUrl').href = data.url;
-                document.getElementById('pasteUrl').innerText = data.url;
-                showToast("✅ Successfully Created!");
+                document.getElementById('outBox').style.display = 'block';
+                document.getElementById('resLink').href = data.url;
+                document.getElementById('resLink').innerText = data.url;
+                btn.innerHTML = '✅ SUCCESS';
             } else {
-                showToast("❌ Error: " + data.message);
+                alert("Error: " + data.message);
+                btn.innerHTML = '🚀 DEPLOY PASTE';
+                btn.disabled = false;
             }
         } catch (e) {
-            showToast("❌ Connection Failed!");
-        } finally {
+            alert("Connection Failed!");
             btn.disabled = false;
-            btn.innerHTML = '🚀 Create New Paste';
         }
     }
-
-    function showToast(m) {
-        const t = document.getElementById('toast');
-        t.innerText = m; t.classList.add('show');
-        setTimeout(() => t.classList.remove('show'), 3000);
-    }
 </script>
-
 </body>
 </html>
