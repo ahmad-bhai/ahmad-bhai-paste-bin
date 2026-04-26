@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ahmad Bhai - Pro Paste</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --p: #00d2ff; --bg: #0f172a; }
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', sans-serif; }
+        body { background: var(--bg); color: white; display: flex; justify-content: center; padding: 20px; }
+        
+        .container { width: 100%; max-width: 800px; background: rgba(255,255,255,0.05); padding: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); }
+        
+        .header { text-align: center; margin-bottom: 25px; }
+        .header i { font-size: 40px; color: var(--p); margin-bottom: 10px; }
+        
+        input, textarea, select {
+            width: 100%; background: #1e293b; border: 1px solid #334155;
+            color: white; padding: 15px; border-radius: 12px; margin-bottom: 15px; outline: none;
+        }
+        
+        textarea { height: 300px; font-family: 'Consolas', monospace; resize: none; }
+        
+        .btn-post {
+            width: 100%; background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
+            color: white; border: none; padding: 18px; border-radius: 12px;
+            font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 16px;
+        }
+        .btn-post:hover { transform: translateY(-2px); opacity: 0.9; }
+
+        .result { margin-top: 20px; display: none; background: #059669; padding: 15px; border-radius: 10px; text-align: center; }
+        #pasteUrl { color: white; font-weight: bold; text-decoration: none; }
+        
+        #toast { position: fixed; bottom: -50px; left: 50%; transform: translateX(-50%); background: #333; padding: 10px 20px; border-radius: 20px; transition: 0.5s; }
+        #toast.show { bottom: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <i class="fa-solid fa-code"></i>
+        <h1>Ahmad Bhai Pastebin</h1>
+        <p style="color: #94a3b8;">Create and share your snippets securely</p>
+    </div>
+
+    <input type="text" id="title" placeholder="Paste Title (Optional)">
+    
+    <select id="format">
+        <option value="text">Plain Text</option>
+        <option value="javascript">JavaScript</option>
+        <option value="python">Python</option>
+        <option value="html5">HTML</option>
+        <option value="css">CSS</option>
+    </select>
+
+    <textarea id="code" placeholder="Paste your code here..."></textarea>
+    
+    <button class="btn-post" id="postBtn" onclick="createPaste()">🚀 Create New Paste</button>
+
+    <div class="result" id="resBox">
+        ✅ Paste Created: <a href="#" id="pasteUrl" target="_blank">Click here to view</a>
+    </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+    async function createPaste() {
+        const btn = document.getElementById('postBtn');
+        const code = document.getElementById('code').value;
+        const title = document.getElementById('title').value;
+        const format = document.getElementById('format').value;
+
+        if(!code) return showToast("⚠️ Write something first!");
+
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generating...';
+
+        try {
+            const response = await fetch('/api/paste', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code, title, format })
+            });
+
+            const data = await response.json();
+
+            if(data.success) {
+                document.getElementById('resBox').style.display = 'block';
+                document.getElementById('pasteUrl').href = data.url;
+                document.getElementById('pasteUrl').innerText = data.url;
+                showToast("✅ Successfully Created!");
+            } else {
+                showToast("❌ Error: " + data.message);
+            }
+        } catch (e) {
+            showToast("❌ Connection Failed!");
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '🚀 Create New Paste';
+        }
+    }
+
+    function showToast(m) {
+        const t = document.getElementById('toast');
+        t.innerText = m; t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 3000);
+    }
+</script>
+
+</body>
+</html>
