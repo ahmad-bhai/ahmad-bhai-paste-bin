@@ -1,78 +1,1288 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ahmad Bhai | Paste Bin</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root { --neon: #00d2ff; --bg: #0b0e14; }
-        * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; }
-        body { background: var(--bg); color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
-        .card { width: 100%; max-width: 600px; background: rgba(255,255,255,0.03); padding: 30px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); text-align: center; }
-        textarea { width: 100%; height: 200px; background: #161b22; border: 1px solid #333; color: #00ff00; padding: 15px; border-radius: 12px; margin: 15px 0; font-family: monospace; outline: none; }
-        input, select { width: 100%; background: #161b22; border: 1px solid #333; color: white; padding: 12px; border-radius: 10px; margin-bottom: 10px; outline: none; }
-        .btn { width: 100%; background: linear-gradient(90deg, #00d2ff, #3a7bd5); color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; cursor: pointer; }
-        .res-box { margin-top: 20px; padding: 15px; background: rgba(0,255,0,0.1); border: 1px solid #00ff00; border-radius: 10px; display: none; }
-        #toast { position: fixed; bottom: -50px; left: 50%; transform: translateX(-50%); background: #ff4757; color: white; padding: 10px 20px; border-radius: 20px; transition: 0.5s; }
-        #toast.show { bottom: 20px; }
-    </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AHMAD DEVELOPER — Elite Quotex Scripts & Bots</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Share+Tech+Mono&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --g:#00ff88;--g2:#00ffcc;--b:#00cfff;--r:#ff3366;--y:#ffcc00;
+  --bg:#03080d;--bg2:#060f18;--panel:#081525;--panel2:#0a1c2e;
+  --border:rgba(0,255,136,0.13);--text:#cce8f0;--muted:#3d6070;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;overflow-x:hidden;}
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--g);border-radius:2px;}
+/* CANVAS */
+#cv{position:fixed;inset:0;z-index:0;pointer-events:none;}
+/* SCANLINES */
+body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.035) 3px,rgba(0,0,0,0.035) 4px);pointer-events:none;z-index:998;}
+/* GRID */
+.gbg{position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(0,255,136,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,.02) 1px,transparent 1px);background-size:50px 50px;pointer-events:none;}
+/* CURSOR */
+#cur1,#cur2{position:fixed;pointer-events:none;z-index:9999;border-radius:50%;transform:translate(-50%,-50%);}
+#cur1{width:8px;height:8px;background:var(--g);mix-blend-mode:screen;}
+#cur2{width:34px;height:34px;border:1.5px solid rgba(0,255,136,.55);transition:all .13s ease;}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;width:100%;z-index:800;height:66px;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;background:rgba(3,8,13,.88);backdrop-filter:blur(18px);border-bottom:1px solid var(--border);}
+.nlogo{font-family:'Orbitron',sans-serif;font-size:.95rem;font-weight:900;color:var(--g);text-shadow:0 0 22px rgba(0,255,136,.5);letter-spacing:.18em;cursor:pointer;}
+.nlogo span{color:var(--text);font-weight:400;}
+nav ul{list-style:none;display:flex;gap:2rem;}
+nav a{text-decoration:none;font-family:'Share Tech Mono',monospace;font-size:.72rem;color:var(--muted);letter-spacing:.14em;transition:color .3s;text-transform:uppercase;}
+nav a:hover{color:var(--g);}
+.nlive{display:flex;align-items:center;gap:.5rem;font-family:'Share Tech Mono',monospace;font-size:.68rem;color:var(--g);}
+.ldot{width:6px;height:6px;background:var(--g);border-radius:50%;animation:lp 1.6s infinite;}
+@keyframes lp{0%,100%{box-shadow:0 0 0 0 rgba(0,255,136,.7);}50%{box-shadow:0 0 0 7px rgba(0,255,136,0);}}
+
+/* ── TICKER ── */
+.ticker-bar{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(0,255,136,.025);padding:.55rem 0;position:fixed;top:66px;width:100%;z-index:799;}
+.ticker{display:flex;animation:tk 35s linear infinite;white-space:nowrap;}
+.ti{font-family:'Share Tech Mono',monospace;font-size:.7rem;color:var(--g);padding:0 2.5rem;opacity:.75;}
+.ti::before{content:'◆ ';}
+@keyframes tk{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:10rem 2rem 5rem;position:relative;z-index:1;overflow:hidden;}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;}
+.o1{width:650px;height:650px;background:radial-gradient(circle,rgba(0,255,136,.065),transparent 70%);top:-180px;left:50%;transform:translateX(-50%);}
+.o2{width:380px;height:380px;background:radial-gradient(circle,rgba(0,207,255,.055),transparent 70%);bottom:-80px;right:-80px;}
+.o3{width:320px;height:320px;background:radial-gradient(circle,rgba(255,51,102,.04),transparent 70%);bottom:0;left:-80px;}
+.hchip{display:inline-flex;align-items:center;gap:.55rem;padding:.3rem 1.1rem;border:1px solid rgba(0,255,136,.22);background:rgba(0,255,136,.04);font-family:'Share Tech Mono',monospace;font-size:.68rem;color:var(--g);letter-spacing:.2em;margin-bottom:1.8rem;animation:fu .8s ease both;}
+.hchip::before{content:'';width:5px;height:5px;background:var(--g);border-radius:50%;animation:lp 1.5s infinite;}
+.hpre{font-family:'Share Tech Mono',monospace;font-size:.8rem;color:var(--b);letter-spacing:.4em;margin-bottom:.7rem;opacity:.65;animation:fu .8s .1s ease both;}
+h1.htitle{font-family:'Orbitron',sans-serif;font-weight:900;line-height:.88;animation:fu .8s .15s ease both;}
+.t1{font-size:clamp(2.8rem,9vw,7.5rem);color:var(--text);display:block;letter-spacing:-.02em;}
+.t2{font-size:clamp(2.8rem,9vw,7.5rem);color:var(--g);display:block;text-shadow:0 0 55px rgba(0,255,136,.35),0 0 110px rgba(0,255,136,.15);}
+.t3{font-size:clamp(.9rem,2.5vw,2rem);color:var(--b);display:block;letter-spacing:.22em;margin-top:.5rem;font-weight:400;text-shadow:0 0 28px rgba(0,207,255,.35);}
+.hsub{max-width:580px;margin:1.8rem auto 0;font-size:1.1rem;line-height:1.8;color:var(--muted);animation:fu .8s .22s ease both;}
+.hsub b{color:var(--text);}
+/* price badges */
+.pbadges{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin:2.2rem 0;animation:fu .8s .28s ease both;}
+.pb{padding:.9rem 1.8rem;border:1px solid;text-align:center;min-width:140px;transition:all .3s;}
+.pb:hover{transform:translateY(-3px);}
+.pb.g{border-color:rgba(0,255,136,.28);background:rgba(0,255,136,.04);}
+.pb.gold{border-color:rgba(255,204,0,.28);background:rgba(255,204,0,.04);}
+.pb.b{border-color:rgba(0,207,255,.28);background:rgba(0,207,255,.04);}
+.pbl{font-family:'Share Tech Mono',monospace;font-size:.6rem;letter-spacing:.22em;color:var(--muted);margin-bottom:.25rem;}
+.pbp{font-family:'Orbitron',sans-serif;font-size:1.55rem;font-weight:900;}
+.pb.g .pbp{color:var(--g);text-shadow:0 0 18px rgba(0,255,136,.35);}
+.pb.gold .pbp{color:var(--y);text-shadow:0 0 18px rgba(255,204,0,.35);}
+.pb.b .pbp{color:var(--b);text-shadow:0 0 18px rgba(0,207,255,.35);}
+.pbper{font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--muted);}
+/* buttons */
+.hbtns{display:flex;gap:.9rem;justify-content:center;flex-wrap:wrap;animation:fu .8s .35s ease both;}
+.btn{padding:.9rem 2.2rem;font-family:'Share Tech Mono',monospace;font-size:.8rem;letter-spacing:.13em;text-decoration:none;border:none;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;text-transform:uppercase;}
+.btn::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.09),transparent);transform:translateX(-100%);transition:transform .5s;}
+.btn:hover::after{transform:translateX(100%);}
+.btn-g{background:var(--g);color:#020a05;font-weight:700;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));}
+.btn-g:hover{background:#00ffaa;box-shadow:0 0 38px rgba(0,255,136,.45);}
+.btn-ghost{background:transparent;color:var(--b);border:1px solid rgba(0,207,255,.3);}
+.btn-ghost:hover{border-color:var(--b);box-shadow:0 0 22px rgba(0,207,255,.18);}
+.btn-r{background:var(--r);color:#fff;font-weight:700;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));}
+.btn-r:hover{background:#ff5577;box-shadow:0 0 28px rgba(255,51,102,.4);}
+.btn-y{background:var(--y);color:#0a0800;font-weight:700;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));}
+.btn-y:hover{background:#ffe033;box-shadow:0 0 28px rgba(255,204,0,.4);}
+@keyframes fu{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:none;}}
+
+/* ── SECTION ── */
+section{padding:6rem 2rem;position:relative;z-index:1;}
+.si{max-width:1200px;margin:0 auto;}
+.stag{font-family:'Share Tech Mono',monospace;font-size:.68rem;color:var(--g);letter-spacing:.38em;margin-bottom:.6rem;}
+.stitle{font-family:'Orbitron',sans-serif;font-size:clamp(1.6rem,3.5vw,2.8rem);font-weight:700;color:var(--text);line-height:1.1;}
+.stitle em{font-style:normal;color:var(--g);}
+.stitle span{font-style:normal;color:var(--b);}
+
+/* ── STATS ── */
+.sbar{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:2.5rem 2rem;z-index:1;position:relative;}
+.srow{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;}
+.sv{text-align:center;}
+.svn{font-family:'Orbitron',sans-serif;font-size:2.5rem;font-weight:900;color:var(--g);text-shadow:0 0 22px rgba(0,255,136,.28);}
+.svl{font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--muted);letter-spacing:.18em;margin-top:.4rem;}
+
+/* ── PRODUCTS ── */
+#products{background:linear-gradient(to bottom,var(--bg),var(--bg2));}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:1.4rem;}
+.pc{background:var(--panel);border:1px solid var(--border);padding:2.3rem;position:relative;overflow:hidden;transition:transform .35s,border-color .35s,box-shadow .35s;clip-path:polygon(0 0,calc(100% - 20px) 0,100% 20px,100% 100%,0 100%);}
+.pc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--g),var(--b),transparent);transform:scaleX(0);transform-origin:left;transition:transform .45s;}
+.pc:hover{transform:translateY(-5px);border-color:rgba(0,255,136,.28);box-shadow:0 18px 50px rgba(0,0,0,.35),0 0 35px rgba(0,255,136,.05);}
+.pc:hover::before,.pc.feat::before{transform:scaleX(1);}
+.pc.feat{border-color:rgba(0,255,136,.22);}
+.corner{position:absolute;top:0;right:0;width:20px;height:20px;}
+.corner.g{background:linear-gradient(135deg,var(--g) 50%,transparent 50%);}
+.corner.gold{background:linear-gradient(135deg,var(--y) 50%,transparent 50%);}
+.corner.b{background:linear-gradient(135deg,var(--b) 50%,transparent 50%);}
+.pbadge{display:inline-flex;align-items:center;gap:.35rem;padding:.2rem .75rem;border:1px solid;font-family:'Share Tech Mono',monospace;font-size:.58rem;letter-spacing:.18em;margin-bottom:1.2rem;}
+.pbadge.g{border-color:rgba(0,255,136,.38);color:var(--g);background:rgba(0,255,136,.05);}
+.pbadge.b{border-color:rgba(0,207,255,.38);color:var(--b);background:rgba(0,207,255,.05);}
+.pbadge.y{border-color:rgba(255,204,0,.38);color:var(--y);background:rgba(255,204,0,.05);}
+.pbadge.r{border-color:rgba(255,51,102,.38);color:var(--r);background:rgba(255,51,102,.05);}
+.picon{font-size:2.5rem;margin-bottom:.9rem;display:block;}
+.pname{font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:.7rem;}
+.pdesc{font-size:.97rem;line-height:1.75;color:var(--muted);margin-bottom:1.5rem;}
+.pfeats{list-style:none;margin-bottom:1.6rem;}
+.pfeats li{font-family:'Share Tech Mono',monospace;font-size:.75rem;color:var(--muted);padding:.28rem 0;border-bottom:1px solid rgba(255,255,255,.03);display:flex;align-items:center;gap:.55rem;}
+.pfeats li::before{content:'✓';color:var(--g);flex-shrink:0;}
+.pfoot{display:flex;align-items:center;justify-content:space-between;padding-top:1.3rem;border-top:1px solid rgba(255,255,255,.04);}
+.pprice{font-family:'Orbitron',sans-serif;}
+.pbig{font-size:1.85rem;font-weight:900;}
+.pbig.g{color:var(--g);text-shadow:0 0 18px rgba(0,255,136,.28);}
+.pbig.gold{color:var(--y);text-shadow:0 0 18px rgba(255,204,0,.28);}
+.pbig.b{color:var(--b);text-shadow:0 0 18px rgba(0,207,255,.28);}
+.pper{font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--muted);display:block;margin-top:.12rem;}
+.buy{padding:.65rem 1.4rem;font-family:'Share Tech Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-decoration:none;border:none;cursor:pointer;transition:all .3s;text-transform:uppercase;}
+.buy.g{background:var(--g);color:#020a05;font-weight:700;clip-path:polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,7px 100%,0 calc(100% - 7px));}
+.buy.g:hover{background:#00ffaa;box-shadow:0 0 22px rgba(0,255,136,.45);}
+.buy.b{background:transparent;color:var(--b);border:1px solid rgba(0,207,255,.38);}
+.buy.b:hover{background:rgba(0,207,255,.07);box-shadow:0 0 18px rgba(0,207,255,.18);}
+.buy.y{background:var(--y);color:#0a0800;font-weight:700;clip-path:polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,7px 100%,0 calc(100% - 7px));}
+.buy.y:hover{background:#ffe033;box-shadow:0 0 22px rgba(255,204,0,.4);}
+
+/* ── PAYMENT ── */
+#payment{background:var(--bg);}
+.pay-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:3rem;}
+.pay-card{background:var(--panel);border:1px solid var(--border);padding:2.5rem;text-align:center;transition:all .3s;position:relative;overflow:hidden;}
+.pay-card:hover{border-color:rgba(0,255,136,.28);transform:translateY(-4px);}
+.pay-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--g),transparent);}
+.pay-icon-big{font-size:3rem;margin-bottom:1rem;}
+.pay-name{font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:700;color:var(--text);margin-bottom:.5rem;}
+.pay-sub{font-family:'Share Tech Mono',monospace;font-size:.72rem;color:var(--muted);margin-bottom:1.5rem;}
+.pay-qr{width:180px;height:180px;margin:0 auto 1.5rem;border:2px solid var(--border);padding:8px;background:white;border-radius:4px;}
+.pay-qr img{width:100%;height:100%;object-fit:contain;display:block;}
+.pay-info{background:rgba(0,255,136,.04);border:1px solid rgba(0,255,136,.12);padding:1rem;margin-bottom:1rem;}
+.pay-label{font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--g);letter-spacing:.25em;margin-bottom:.3rem;}
+.pay-val{font-family:'Share Tech Mono',monospace;font-size:.82rem;color:var(--text);word-break:break-all;}
+.copy-btn{background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.25);color:var(--g);font-family:'Share Tech Mono',monospace;font-size:.65rem;padding:.35rem .9rem;cursor:pointer;letter-spacing:.1em;transition:all .3s;margin-top:.5rem;}
+.copy-btn:hover{background:rgba(0,255,136,.15);}
+.pay-steps{text-align:left;margin-top:1.5rem;}
+.pay-step{display:flex;gap:.8rem;align-items:flex-start;margin-bottom:.8rem;}
+.ps-num{width:22px;height:22px;border-radius:50%;background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.3);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:.65rem;color:var(--g);flex-shrink:0;margin-top:.1rem;}
+.ps-text{font-family:'Share Tech Mono',monospace;font-size:.75rem;color:var(--muted);line-height:1.6;}
+
+/* ── SCRIPT PUBLIC ── */
+#script{background:var(--bg2);}
+.script-wrap{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start;margin-top:3rem;}
+.script-info p{font-size:1rem;color:var(--muted);line-height:1.8;margin-bottom:1.5rem;}
+.script-features{list-style:none;margin-bottom:2rem;}
+.script-features li{display:flex;gap:.7rem;align-items:flex-start;padding:.5rem 0;border-bottom:1px solid var(--border);font-size:.95rem;color:var(--muted);}
+.script-features li::before{content:'⚡';flex-shrink:0;}
+.script-box{background:var(--panel);border:1px solid var(--border);border-top:2px solid var(--g);overflow:hidden;}
+.sb-header{padding:.9rem 1.3rem;background:rgba(0,255,136,.03);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.sb-title{font-family:'Share Tech Mono',monospace;font-size:.75rem;color:var(--g);letter-spacing:.15em;}
+.sb-dots{display:flex;gap:.35rem;}
+.sb-dot{width:9px;height:9px;border-radius:50%;}
+.sb-body{padding:1.5rem;font-family:'Share Tech Mono',monospace;font-size:.75rem;line-height:2;}
+.sc-tag{color:var(--muted);}
+.sc-key{color:var(--b);}
+.sc-val{color:var(--g);}
+.sc-str{color:var(--y);}
+.install-steps{margin-top:2rem;}
+.install-step{display:flex;gap:1rem;align-items:flex-start;padding:1rem;border:1px solid var(--border);margin-bottom:.6rem;background:rgba(8,21,37,.5);transition:border-color .3s;}
+.install-step:hover{border-color:rgba(0,255,136,.22);}
+.is-num{font-family:'Orbitron',sans-serif;font-size:1.5rem;font-weight:900;color:rgba(0,255,136,.15);line-height:1;flex-shrink:0;}
+.is-title{font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.3rem;}
+.is-desc{font-family:'Share Tech Mono',monospace;font-size:.72rem;color:var(--muted);line-height:1.6;}
+
+/* ── FAQ ── */
+#faq{background:var(--bg);}
+.faq-list{margin-top:3rem;max-width:800px;}
+.faq-item{border:1px solid var(--border);margin-bottom:.6rem;overflow:hidden;transition:border-color .3s;}
+.faq-item.open{border-color:rgba(0,255,136,.28);}
+.faq-q{padding:1.2rem 1.5rem;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-family:'Orbitron',sans-serif;font-size:.9rem;font-weight:600;color:var(--text);transition:color .3s;}
+.faq-item.open .faq-q{color:var(--g);}
+.faq-arr{font-size:1.2rem;color:var(--muted);transition:transform .3s;}
+.faq-item.open .faq-arr{transform:rotate(45deg);color:var(--g);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s;}
+.faq-item.open .faq-a{max-height:300px;padding:0 1.5rem 1.2rem;}
+.faq-a p{font-size:.95rem;color:var(--muted);line-height:1.8;}
+.faq-a a{color:var(--b);text-decoration:none;}
+
+/* ── SUPPORT ── */
+#support{background:var(--bg2);}
+.support-wrap{display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-top:3rem;}
+.support-form{background:var(--panel);border:1px solid var(--border);padding:2.5rem;}
+.support-form h3{font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:1.5rem;}
+.form-group{margin-bottom:1.2rem;}
+.form-group label{display:block;font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--g);letter-spacing:.22em;margin-bottom:.45rem;}
+.form-group input,.form-group select,.form-group textarea{width:100%;background:rgba(0,0,0,.3);border:1px solid var(--border);color:var(--text);padding:.75rem 1rem;font-family:'Share Tech Mono',monospace;font-size:.8rem;outline:none;transition:border-color .3s;resize:none;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:rgba(0,255,136,.4);}
+.form-group select option{background:var(--bg2);}
+.submit-btn{width:100%;padding:1rem;background:var(--g);color:#020a05;font-family:'Orbitron',sans-serif;font-size:.9rem;font-weight:700;border:none;cursor:pointer;letter-spacing:.12em;transition:all .3s;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));}
+.submit-btn:hover{background:#00ffaa;box-shadow:0 0 30px rgba(0,255,136,.4);}
+/* tickets */
+.tickets-panel{background:var(--panel);border:1px solid var(--border);}
+.tp-header{padding:1.2rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.tp-title{font-family:'Orbitron',sans-serif;font-size:.9rem;font-weight:700;color:var(--text);}
+.ticket-count{background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.25);color:var(--g);font-family:'Share Tech Mono',monospace;font-size:.65rem;padding:.2rem .6rem;}
+.ticket-list{padding:1.2rem;}
+.ticket{border:1px solid var(--border);padding:1rem 1.2rem;margin-bottom:.7rem;transition:border-color .3s;}
+.ticket:hover{border-color:rgba(0,255,136,.22);}
+.ticket-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem;}
+.ticket-id{font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--muted);}
+.ticket-status{font-family:'Share Tech Mono',monospace;font-size:.6rem;padding:.15rem .5rem;border:1px solid;}
+.ticket-status.open{color:var(--y);border-color:rgba(255,204,0,.35);background:rgba(255,204,0,.05);}
+.ticket-status.solved{color:var(--g);border-color:rgba(0,255,136,.35);background:rgba(0,255,136,.05);}
+.ticket-status.pending{color:var(--b);border-color:rgba(0,207,255,.35);background:rgba(0,207,255,.05);}
+.ticket-subject{font-family:'Orbitron',sans-serif;font-size:.82rem;color:var(--text);margin-bottom:.3rem;}
+.ticket-meta{font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--muted);}
+/* support team */
+.team-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:2rem;}
+.team-card{background:var(--panel);border:1px solid var(--border);padding:1.3rem;display:flex;gap:1rem;align-items:center;transition:border-color .3s;}
+.team-card:hover{border-color:rgba(0,255,136,.25);}
+.team-avatar{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:900;flex-shrink:0;}
+.team-name{font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.2rem;}
+.team-role{font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--muted);margin-bottom:.4rem;}
+.team-online{display:flex;align-items:center;gap:.35rem;font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--g);}
+.team-online::before{content:'';width:5px;height:5px;background:var(--g);border-radius:50%;animation:lp 1.5s infinite;}
+
+/* ── REVIEWS ── */
+#reviews{background:var(--bg);}
+.rev-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1.2rem;margin-top:3rem;}
+.rev{background:var(--panel);border:1px solid var(--border);padding:1.8rem;transition:border-color .3s;}
+.rev:hover{border-color:rgba(0,255,136,.22);}
+.rev-q{font-size:2.5rem;color:rgba(0,255,136,.1);font-family:'Orbitron',sans-serif;line-height:.8;margin-bottom:.6rem;}
+.rev-text{font-size:.95rem;line-height:1.75;color:var(--text);margin-bottom:1.3rem;}
+.rev-footer{display:flex;align-items:center;gap:.7rem;}
+.rev-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:700;color:#020a05;flex-shrink:0;}
+.rev-name{font-family:'Share Tech Mono',monospace;font-size:.75rem;color:var(--g);}
+.rev-sub{font-size:.72rem;color:var(--muted);}
+.stars{color:var(--y);font-size:.8rem;letter-spacing:.1em;margin-top:.15rem;}
+
+/* ── LIVE TERMINAL ── */
+.term{background:var(--panel);border:1px solid var(--border);border-top:2px solid var(--g);}
+.term-h{padding:.9rem 1.3rem;background:rgba(0,255,136,.03);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.term-t{font-family:'Share Tech Mono',monospace;font-size:.75rem;color:var(--g);letter-spacing:.15em;}
+.term-dots{display:flex;gap:.35rem;}
+.td{width:9px;height:9px;border-radius:50%;}
+.term-body{padding:1.3rem;font-family:'Share Tech Mono',monospace;font-size:.73rem;line-height:2.2;max-height:300px;overflow-y:auto;}
+.tl{display:flex;gap:.9rem;}
+.tt{color:var(--muted);flex-shrink:0;}.tg{color:var(--g);}.tb{color:var(--b);}.ty{color:var(--y);}.tw{color:var(--text);}
+.tc::after{content:'█';color:var(--g);animation:bl 1s infinite;}
+@keyframes bl{0%,100%{opacity:1;}50%{opacity:0;}}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:2rem;right:2rem;background:var(--g);color:#020a05;font-family:'Share Tech Mono',monospace;font-size:.8rem;padding:.8rem 1.5rem;z-index:9999;transform:translateX(150%);transition:transform .4s;font-weight:700;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%);}
+.toast.show{transform:translateX(0);}
+
+/* ── FOOTER ── */
+footer{background:#020609;border-top:1px solid var(--border);padding:2.5rem;text-align:center;z-index:1;position:relative;}
+.flogo{font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:900;color:var(--g);text-shadow:0 0 18px rgba(0,255,136,.35);letter-spacing:.15em;margin-bottom:.5rem;}
+.flinks{display:flex;gap:1.8rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.3rem;}
+.flinks a{font-family:'Share Tech Mono',monospace;font-size:.68rem;color:var(--muted);text-decoration:none;letter-spacing:.13em;transition:color .3s;}
+.flinks a:hover{color:var(--g);}
+.fcopy{font-family:'Share Tech Mono',monospace;font-size:.62rem;color:rgba(61,96,112,.45);}
+
+/* ── ADMIN PANEL ── */
+#admin-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px);}
+#admin-overlay.open{display:flex;}
+.admin-panel{width:min(960px,95vw);max-height:90vh;overflow-y:auto;background:var(--bg2);border:1px solid var(--border);border-top:3px solid var(--g);}
+.ap-header{padding:1.5rem 2rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--bg2);z-index:10;}
+.ap-title{font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:700;color:var(--g);}
+.ap-close{background:none;border:none;color:var(--muted);font-size:1.4rem;cursor:pointer;transition:color .3s;}
+.ap-close:hover{color:var(--r);}
+.ap-tabs{display:flex;border-bottom:1px solid var(--border);background:rgba(0,0,0,.2);}
+.ap-tab{padding:.9rem 1.8rem;font-family:'Share Tech Mono',monospace;font-size:.72rem;color:var(--muted);cursor:pointer;border:none;background:none;letter-spacing:.12em;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .3s;text-transform:uppercase;}
+.ap-tab.act{color:var(--g);border-bottom-color:var(--g);}
+.ap-body{padding:2rem;}
+.ap-section{display:none;}
+.ap-section.act{display:block;}
+/* admin fields */
+.ap-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.5rem;}
+.ap-field label{display:block;font-family:'Share Tech Mono',monospace;font-size:.62rem;color:var(--g);letter-spacing:.22em;margin-bottom:.4rem;}
+.ap-field input,.ap-field select,.ap-field textarea{width:100%;background:rgba(0,0,0,.4);border:1px solid var(--border);color:var(--text);padding:.7rem 1rem;font-family:'Share Tech Mono',monospace;font-size:.78rem;outline:none;transition:border-color .3s;}
+.ap-field input:focus,.ap-field select:focus{border-color:rgba(0,255,136,.38);}
+.ap-save{padding:.75rem 2rem;background:var(--g);color:#020a05;font-family:'Orbitron',sans-serif;font-size:.82rem;font-weight:700;border:none;cursor:pointer;letter-spacing:.1em;transition:all .3s;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px));}
+.ap-save:hover{background:#00ffaa;box-shadow:0 0 22px rgba(0,255,136,.4);}
+.ap-danger{padding:.75rem 2rem;background:var(--r);color:#fff;font-family:'Orbitron',sans-serif;font-size:.82rem;font-weight:700;border:none;cursor:pointer;letter-spacing:.1em;transition:all .3s;}
+/* ticket management */
+.ap-ticket{background:rgba(0,0,0,.25);border:1px solid var(--border);padding:1rem 1.2rem;margin-bottom:.6rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;}
+.apt-info{}
+.apt-id{font-family:'Share Tech Mono',monospace;font-size:.62rem;color:var(--muted);margin-bottom:.2rem;}
+.apt-sub{font-family:'Orbitron',sans-serif;font-size:.85rem;color:var(--text);margin-bottom:.2rem;}
+.apt-from{font-family:'Share Tech Mono',monospace;font-size:.68rem;color:var(--b);}
+.apt-actions{display:flex;gap:.5rem;flex-shrink:0;}
+.apt-btn{padding:.35rem .9rem;font-family:'Share Tech Mono',monospace;font-size:.62rem;border:1px solid;cursor:pointer;background:none;letter-spacing:.08em;transition:all .3s;}
+.apt-btn.solve{color:var(--g);border-color:rgba(0,255,136,.35);}
+.apt-btn.solve:hover{background:rgba(0,255,136,.08);}
+.apt-btn.del{color:var(--r);border-color:rgba(255,51,102,.35);}
+.apt-btn.del:hover{background:rgba(255,51,102,.08);}
+/* login */
+.login-box{max-width:360px;margin:0 auto;text-align:center;padding:2rem;}
+.login-box h3{font-family:'Orbitron',sans-serif;font-size:1rem;color:var(--g);margin-bottom:1.5rem;}
+.login-box input{width:100%;background:rgba(0,0,0,.4);border:1px solid var(--border);color:var(--text);padding:.8rem 1rem;font-family:'Share Tech Mono',monospace;font-size:.85rem;margin-bottom:.8rem;outline:none;text-align:center;}
+.login-box input:focus{border-color:rgba(0,255,136,.38);}
+/* stat cards */
+.ap-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem;}
+.aps{background:rgba(0,0,0,.25);border:1px solid var(--border);padding:1.2rem;text-align:center;}
+.aps-n{font-family:'Orbitron',sans-serif;font-size:1.8rem;font-weight:900;color:var(--g);}
+.aps-l{font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--muted);margin-top:.3rem;}
+/* toggle */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:.8rem 0;border-bottom:1px solid var(--border);}
+.toggle-label{font-family:'Share Tech Mono',monospace;font-size:.78rem;color:var(--text);}
+.toggle{width:44px;height:24px;background:var(--muted);border-radius:12px;cursor:pointer;position:relative;transition:background .3s;}
+.toggle.on{background:var(--g);}
+.toggle::after{content:'';position:absolute;width:18px;height:18px;background:#fff;border-radius:50%;top:3px;left:3px;transition:left .3s;}
+.toggle.on::after{left:23px;}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease;}
+.rv.vi{opacity:1;transform:none;}
+.rvl{opacity:0;transform:translateX(-22px);transition:opacity .7s ease,transform .7s ease;}
+.rvl.vi{opacity:1;transform:none;}
+.rvr{opacity:0;transform:translateX(22px);transition:opacity .7s ease,transform .7s ease;}
+.rvr.vi{opacity:1;transform:none;}
+
+/* MOBILE */
+@media(max-width:900px){
+  nav ul{display:none;}
+  .srow{grid-template-columns:1fr 1fr;}
+  .pay-grid,.script-wrap,.support-wrap,.contact-wrap,.ap-grid,.ap-stats,.team-grid{grid-template-columns:1fr;}
+  .admin-panel{max-height:95vh;}
+}
+@media(max-width:600px){
+  section{padding:4.5rem 1.2rem;}
+  nav{padding:0 1.2rem;}
+  footer{padding:2rem 1.2rem;}
+  .srow{grid-template-columns:1fr 1fr;}
+}
+</style>
 </head>
 <body>
+<canvas id="cv"></canvas>
+<div class="gbg"></div>
+<div id="cur1" class="cur"></div>
+<div id="cur2" class="cur"></div>
+<div class="toast" id="toast"></div>
 
-<div class="card">
-    <i class="fa-solid fa-bolt" style="font-size: 40px; color: var(--neon);"></i>
-    <h1 style="margin-bottom: 20px;">Ahmad Bhai Paste</h1>
-    
-    <input type="text" id="t" placeholder="Title">
-    <select id="f">
-        <option value="text">Text</option>
-        <option value="javascript">JavaScript</option>
-    </select>
-    <textarea id="c" placeholder="Paste code here..."></textarea>
-    
-    <button class="btn" id="b" onclick="go()">🚀 Create Paste</button>
+<!-- NAV -->
+<nav>
+  <div class="nlogo" onclick="scrollTo({top:0,behavior:'smooth'})">AHMAD<span>.DEV</span></div>
+  <ul>
+    <li><a href="#products">Products</a></li>
+    <li><a href="#payment">Payment</a></li>
+    <li><a href="#script">Script</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#support">Support</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+  </ul>
+  <div style="display:flex;gap:1rem;align-items:center;">
+    <div class="nlive"><div class="ldot"></div>LIVE</div>
+    <button onclick="openAdmin()" style="background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.25);color:var(--g);font-family:'Share Tech Mono',monospace;font-size:.65rem;padding:.35rem .8rem;cursor:pointer;letter-spacing:.12em;">⚙ ADMIN</button>
+  </div>
+</nav>
 
-    <div class="res-box" id="rb">
-        <p style="font-size: 12px;">Link Generated:</p>
-        <a href="#" id="rl" target="_blank" style="color: var(--neon); font-weight: bold;"></a>
-    </div>
+<!-- TICKER -->
+<div class="ticker-bar"><div class="ticker" id="tk">
+  <span class="ti">QUOTEX SCRIPTS $30/MONTH</span><span class="ti">TRADING BOT $10/MONTH</span><span class="ti">ID VERIFY BOT $40 LIFETIME</span><span class="ti">SIGNALS BOT FREE</span><span class="ti">24/7 SUPPORT</span><span class="ti">PAY VIA BINANCE OR TRC20</span><span class="ti">INSTANT DELIVERY</span><span class="ti">JOIN @AHMAD_DEVELPER</span>
+  <span class="ti">QUOTEX SCRIPTS $30/MONTH</span><span class="ti">TRADING BOT $10/MONTH</span><span class="ti">ID VERIFY BOT $40 LIFETIME</span><span class="ti">SIGNALS BOT FREE</span><span class="ti">24/7 SUPPORT</span><span class="ti">PAY VIA BINANCE OR TRC20</span><span class="ti">INSTANT DELIVERY</span><span class="ti">JOIN @AHMAD_DEVELPER</span>
+</div></div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+  <div class="hchip">🤖 AHMAD DEVELOPER · @AHMAD_DEVELPER · OFFICIAL</div>
+  <div class="hpre">// ELITE QUOTEX AUTOMATION</div>
+  <h1 class="htitle"><span class="t1">DOMINATE</span><span class="t2">QUOTEX</span><span class="t3">PRO SCRIPTS &amp; TRADING BOTS</span></h1>
+  <p class="hsub">Professional-grade <b>trading scripts</b>, <b>auto bots</b> &amp; <b>verification tools</b> built for serious Quotex traders. <b>Affordable. Fast. Reliable.</b></p>
+  <div class="pbadges">
+    <div class="pb g"><div class="pbl">QUOTEX SCRIPTS</div><div class="pbp" id="disp-p1">$30</div><div class="pbper">per month</div></div>
+    <div class="pb gold"><div class="pbl">ID VERIFY BOT</div><div class="pbp" id="disp-p2">$40</div><div class="pbper">lifetime</div></div>
+    <div class="pb b"><div class="pbl">TRADING BOTS</div><div class="pbp" id="disp-p3">$10</div><div class="pbper">per month</div></div>
+  </div>
+  <div class="hbtns">
+    <a href="#products" class="btn btn-g">⚡ GET SCRIPTS NOW</a>
+    <a href="#payment" class="btn btn-ghost">💳 HOW TO PAY</a>
+    <a href="https://t.me/AHMAD_DEVELPER" target="_blank" class="btn btn-ghost">📢 JOIN CHANNEL</a>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="sbar">
+  <div class="srow">
+    <div class="sv rv"><div class="svn">214+</div><div class="svl">SUBSCRIBERS</div></div>
+    <div class="sv rv"><div class="svn" id="disp-sp3">$10</div><div class="svl">LOWEST PRICE</div></div>
+    <div class="sv rv"><div class="svn">24/7</div><div class="svl">SUPPORT</div></div>
+    <div class="sv rv"><div class="svn">100%</div><div class="svl">HALAL PAYMENT</div></div>
+  </div>
 </div>
 
-<div id="toast">Error Notification</div>
+<!-- PRODUCTS -->
+<section id="products">
+  <div class="si">
+    <div class="rv" style="text-align:center;margin-bottom:3rem;">
+      <div class="stag" style="text-align:center;">// PRODUCTS & PRICING</div>
+      <h2 class="stitle" style="text-align:center;">Choose Your <em>Weapon</em></h2>
+    </div>
+    <div class="pgrid">
+      <div class="pc feat rv">
+        <div class="corner g"></div>
+        <div class="pbadge g">★ MOST POPULAR</div>
+        <span class="picon">⚡</span>
+        <div class="pname">Quotex Scripts</div>
+        <div class="pdesc">The ultimate Quotex script suite — Magic Script, Fast Pro &amp; all updates. Works on Android &amp; PC via bookmarklet injection.</div>
+        <ul class="pfeats">
+          <li>Android &amp; PC browser support</li>
+          <li>Magic loading overlay injection</li>
+          <li>Multi-page (trade, withdraw, mobile)</li>
+          <li>Monthly updates auto-delivered</li>
+          <li>Private obfuscated delivery</li>
+          <li>Full setup guide included</li>
+        </ul>
+        <div class="pfoot">
+          <div class="pprice"><span class="pbig g" id="p1-price">$30</span><span class="pper">per month</span></div>
+          <a href="https://t.me/AhmadTrader3" target="_blank" class="buy g">BUY NOW →</a>
+        </div>
+      </div>
+      <div class="pc rv">
+        <div class="corner gold"></div>
+        <div class="pbadge y">💎 LIFETIME DEAL</div>
+        <span class="picon">🔒</span>
+        <div class="pname">ID Verification Bot</div>
+        <div class="pdesc">Custom Quotex Trader ID verification bot. Pay once, use forever. Built to your exact specifications with full Telegram integration.</div>
+        <ul class="pfeats">
+          <li>One-time payment — lifetime access</li>
+          <li>Custom-built for your platform</li>
+          <li>Quotex trader ID verification</li>
+          <li>Telegram bot integration</li>
+          <li>Full source + deployment</li>
+          <li>Priority support included</li>
+        </ul>
+        <div class="pfoot">
+          <div class="pprice"><span class="pbig gold" id="p2-price">$40</span><span class="pper">one-time lifetime</span></div>
+          <a href="https://t.me/AhmadTrader3" target="_blank" class="buy y">ORDER →</a>
+        </div>
+      </div>
+      <div class="pc rv">
+        <div class="corner b"></div>
+        <div class="pbadge b">🤖 AUTO TRADE</div>
+        <span class="picon">🚀</span>
+        <div class="pname">Trading Bots</div>
+        <div class="pdesc">Set-and-forget auto trading bots for Quotex. Inject script, configure, and let it place trades automatically while you relax.</div>
+        <ul class="pfeats">
+          <li>Fully automated trade placement</li>
+          <li>Signals bot (free + premium)</li>
+          <li>Auto Trading Bot script</li>
+          <li>All Quotex pages compatible</li>
+          <li>Monthly updates &amp; fixes</li>
+          <li>24/7 Telegram bot support</li>
+        </ul>
+        <div class="pfoot">
+          <div class="pprice"><span class="pbig b" id="p3-price">$10</span><span class="pper">per month</span></div>
+          <a href="https://t.me/AhmadTrader3" target="_blank" class="buy b">GET BOT →</a>
+        </div>
+      </div>
+      <div class="pc rv">
+        <div class="pbadge g">🆓 FREE</div>
+        <span class="picon">📡</span>
+        <div class="pname">Signals Bot (Free)</div>
+        <div class="pdesc">Try before you buy. Real-time Quotex trade signals delivered to your browser. No payment needed to start trading smarter.</div>
+        <ul class="pfeats"><li>Real-time trade signals</li><li>Works in browser instantly</li><li>No registration required</li><li>Upgrade to premium anytime</li></ul>
+        <div class="pfoot">
+          <div class="pprice"><span class="pbig g">FREE</span><span class="pper">no cost</span></div>
+          <a href="https://ahmad-bhai-signals-bot.vercel.app/" target="_blank" class="buy g">TRY FREE →</a>
+        </div>
+      </div>
+      <div class="pc rv">
+        <div class="pbadge r">🔧 UTILITY</div>
+        <span class="picon">🖼️</span>
+        <div class="pname">Image Hosting</div>
+        <div class="pdesc">Free image hosting platform. Upload and share with a permanent link instantly — no account needed, always free.</div>
+        <ul class="pfeats"><li>Free forever</li><li>Instant upload &amp; share link</li><li>No account required</li><li>Fast global CDN</li></ul>
+        <div class="pfoot">
+          <div class="pprice"><span class="pbig g">FREE</span><span class="pper">always</span></div>
+          <a href="https://ahmad-bhai-img-hosting.vercel.app/" target="_blank" class="buy b">OPEN →</a>
+        </div>
+      </div>
+      <div class="pc rv">
+        <div class="pbadge b">⬇️ DOWNLOAD</div>
+        <span class="picon">📥</span>
+        <div class="pname">Media Downloader</div>
+        <div class="pdesc">All-in-one social media downloader via Telegram bot or Android APK. Download from any major platform in seconds.</div>
+        <ul class="pfeats"><li>All social media platforms</li><li>Telegram bot interface</li><li>Android APK available</li><li>Web version available</li></ul>
+        <div class="pfoot">
+          <div class="pprice"><span class="pbig b">FREE</span><span class="pper">use anytime</span></div>
+          <a href="https://t.me/ahmad_bhai_media_downloader_bot" target="_blank" class="buy b">USE →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAYMENT -->
+<section id="payment">
+  <div class="si">
+    <div class="rv" style="text-align:center;margin-bottom:.5rem;">
+      <div class="stag" style="text-align:center;">// SECURE PAYMENT</div>
+      <h2 class="stitle" style="text-align:center;">How to <em>Pay</em></h2>
+      <p style="color:var(--muted);margin-top:.7rem;font-size:1rem;">We accept Binance &amp; TRC20 (USDT). Both are fast, secure &amp; crypto-native.</p>
+    </div>
+    <div class="pay-grid">
+      <!-- BINANCE -->
+      <div class="pay-card rv">
+        <div class="pay-icon-big">🟡</div>
+        <div class="pay-name">Binance Pay</div>
+        <div class="pay-sub">Scan QR or send directly to Binance ID</div>
+        <div class="pay-qr"><img src="https://i.ibb.co/d0tqPPnv/d505c6b3e66d.png" alt="Binance QR" onerror="this.parentElement.innerHTML='<div style=&quot;font-family:Share Tech Mono,monospace;font-size:.7rem;color:#3d6070;padding:2rem;&quot;>QR CODE<br/>Loading...</div>'"/></div>
+        <div class="pay-info">
+          <div class="pay-label">BINANCE ID</div>
+          <div class="pay-val" id="bin-id">505638805</div>
+        </div>
+        <button class="copy-btn" onclick="copyText('505638805','Binance ID')">📋 COPY BINANCE ID</button>
+        <div class="pay-info" style="margin-top:.8rem;">
+          <div class="pay-label">BINANCE NICKNAME</div>
+          <div class="pay-val" id="bin-nick">AHMAD_BHAI_786</div>
+        </div>
+        <button class="copy-btn" onclick="copyText('AHMAD_BHAI_786','Nickname')">📋 COPY NICKNAME</button>
+        <div class="pay-steps">
+          <div class="pay-step"><div class="ps-num">1</div><div class="ps-text">Open Binance app → Pay → Send</div></div>
+          <div class="pay-step"><div class="ps-num">2</div><div class="ps-text">Enter ID <b style="color:var(--g)">505638805</b> or scan QR above</div></div>
+          <div class="pay-step"><div class="ps-num">3</div><div class="ps-text">Enter amount &amp; confirm payment</div></div>
+          <div class="pay-step"><div class="ps-num">4</div><div class="ps-text">Send screenshot to <a href="https://t.me/AhmadTrader3" target="_blank">@AhmadTrader3</a></div></div>
+        </div>
+      </div>
+      <!-- TRC20 -->
+      <div class="pay-card rv">
+        <div class="pay-icon-big">🔷</div>
+        <div class="pay-name">TRC20 (USDT)</div>
+        <div class="pay-sub">Send USDT via TRON TRC20 network</div>
+        <div class="pay-qr"><img src="https://i.ibb.co/SwNqpycL/trc-qx.jpg" alt="TRC20 QR" onerror="this.parentElement.innerHTML='<div style=&quot;font-family:Share Tech Mono,monospace;font-size:.7rem;color:#3d6070;padding:2rem;&quot;>QR CODE<br/>Loading...</div>'"/></div>
+        <div class="pay-info">
+          <div class="pay-label">TRC20 USDT ADDRESS</div>
+          <div class="pay-val" id="trc-addr" style="font-size:.7rem;">TLvd3Q1UpE8Cio8GxrqZzemSVWe8cH5Rxu</div>
+        </div>
+        <button class="copy-btn" onclick="copyText('TLvd3Q1UpE8Cio8GxrqZzemSVWe8cH5Rxu','TRC20 Address')">📋 COPY ADDRESS</button>
+        <div class="pay-info" style="margin-top:.8rem;border-color:rgba(255,204,0,.2);background:rgba(255,204,0,.04);">
+          <div class="pay-label" style="color:var(--y);">⚠ IMPORTANT WARNING</div>
+          <div class="pay-val" style="font-size:.7rem;color:rgba(255,204,0,.8);">Only send USDT on TRC20 network. Sending on wrong network will result in permanent loss of funds!</div>
+        </div>
+        <div class="pay-steps">
+          <div class="pay-step"><div class="ps-num">1</div><div class="ps-text">Open your wallet → Send → USDT</div></div>
+          <div class="pay-step"><div class="ps-num">2</div><div class="ps-text">Select <b style="color:var(--b)">TRC20 / TRON</b> network</div></div>
+          <div class="pay-step"><div class="ps-num">3</div><div class="ps-text">Paste address or scan QR, enter amount</div></div>
+          <div class="pay-step"><div class="ps-num">4</div><div class="ps-text">Send TX hash to <a href="https://t.me/AhmadTrader3" target="_blank">@AhmadTrader3</a></div></div>
+        </div>
+      </div>
+    </div>
+    <!-- after payment note -->
+    <div class="rv" style="margin-top:2rem;background:rgba(0,255,136,.04);border:1px solid rgba(0,255,136,.18);padding:2rem;text-align:center;">
+      <div style="font-family:'Orbitron',sans-serif;font-size:1rem;color:var(--g);margin-bottom:.6rem;">✅ After Payment</div>
+      <p style="color:var(--muted);font-size:.95rem;line-height:1.8;">Send your payment screenshot or transaction hash to <a href="https://t.me/AhmadTrader3" target="_blank" style="color:var(--b);">@AhmadTrader3</a> on Telegram. Your script or bot will be delivered within <b style="color:var(--text);">10 minutes</b>. Available 24/7.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SCRIPT PUBLIC -->
+<section id="script">
+  <div class="si">
+    <div class="rv">
+      <div class="stag">// PUBLIC SCRIPT INFO</div>
+      <h2 class="stitle">The Quotex <em>Magic Script</em></h2>
+    </div>
+    <div class="script-wrap">
+      <div class="script-info rvl">
+        <p>The Ahmad Developer Quotex Script is a powerful browser-injection tool that enhances your Quotex trading experience. It runs directly in your browser via a simple bookmarklet — no software installation needed.</p>
+        <ul class="script-features">
+          <li>Works on Quotex web platform — PC and Android browsers</li>
+          <li>Activates via one-click bookmarklet injection</li>
+          <li>Loads the latest version automatically on each use</li>
+          <li>Magic overlay system that enhances the trading interface</li>
+          <li>Multi-page compatible (trading, withdrawal, mobile)</li>
+          <li>Obfuscated for security — your access is private</li>
+          <li>Updated regularly — subscribers always get the latest build</li>
+        </ul>
+        <div class="install-steps">
+          <div class="stag" style="margin-bottom:1rem;">// HOW TO INSTALL</div>
+          <div class="install-step">
+            <div class="is-num">01</div>
+            <div><div class="is-title">Purchase Access</div><div class="is-desc">Contact @AhmadTrader3 on Telegram and complete payment. You'll receive your personal bookmarklet code.</div></div>
+          </div>
+          <div class="install-step">
+            <div class="is-num">02</div>
+            <div><div class="is-title">Create Bookmark</div><div class="is-desc">On PC: Drag the bookmarklet to your bookmarks bar. On Android: Add as a bookmark, then edit the URL to paste the code.</div></div>
+          </div>
+          <div class="install-step">
+            <div class="is-num">03</div>
+            <div><div class="is-title">Open Quotex</div><div class="is-desc">Go to quotex.io in your browser and log into your trading account as normal.</div></div>
+          </div>
+          <div class="install-step">
+            <div class="is-num">04</div>
+            <div><div class="is-title">Click &amp; Activate</div><div class="is-desc">Click your bookmarklet. The script activates, the overlay loads, and you're ready to trade with full enhancements.</div></div>
+          </div>
+        </div>
+        <div style="margin-top:2rem;display:flex;gap:1rem;flex-wrap:wrap;">
+          <a href="https://t.me/AhmadTrader3" target="_blank" class="btn btn-g">⚡ GET SCRIPT — $30/mo</a>
+          <a href="https://t.me/AHMAD_DEVELPER" target="_blank" class="btn btn-ghost">📢 JOIN CHANNEL</a>
+        </div>
+      </div>
+      <div class="rvr">
+        <div class="script-box">
+          <div class="sb-header">
+            <span class="sb-title">⬡ SCRIPT INFO PANEL</span>
+            <div class="sb-dots">
+              <div class="sb-dot" style="background:#ff5f56;"></div>
+              <div class="sb-dot" style="background:#ffbd2e;"></div>
+              <div class="sb-dot" style="background:#27c93f;"></div>
+            </div>
+          </div>
+          <div class="sb-body">
+            <div><span class="sc-tag">// QUOTEX MAGIC SCRIPT</span></div>
+            <div><span class="sc-tag">// by Ahmad Developer</span></div>
+            <br/>
+            <div><span class="sc-key">name</span>: <span class="sc-str">"Quotex Magic Script"</span></div>
+            <div><span class="sc-key">version</span>: <span class="sc-val">3.2</span></div>
+            <div><span class="sc-key">platform</span>: <span class="sc-str">"quotex.io"</span></div>
+            <div><span class="sc-key">type</span>: <span class="sc-str">"bookmarklet"</span></div>
+            <div><span class="sc-key">devices</span>: [<span class="sc-str">"PC"</span>, <span class="sc-str">"Android"</span>]</div>
+            <div><span class="sc-key">delivery</span>: <span class="sc-str">"via Telegram DM"</span></div>
+            <div><span class="sc-key">price</span>: <span class="sc-val" id="sb-price">"$30 / month"</span></div>
+            <div><span class="sc-key">support</span>: <span class="sc-str">"24/7 Telegram"</span></div>
+            <br/>
+            <div><span class="sc-key">features</span>: [</div>
+            <div>&nbsp;&nbsp;<span class="sc-str">"magic_overlay"</span>,</div>
+            <div>&nbsp;&nbsp;<span class="sc-str">"auto_updates"</span>,</div>
+            <div>&nbsp;&nbsp;<span class="sc-str">"multi_page"</span>,</div>
+            <div>&nbsp;&nbsp;<span class="sc-str">"obfuscated_delivery"</span></div>
+            <div>]</div>
+            <br/>
+            <div><span class="sc-tag">// Contact @AhmadTrader3 to buy</span></div>
+            <div><span class="sc-val">STATUS: ACTIVE ●</span> <span class="tc"></span></div>
+          </div>
+        </div>
+        <div style="margin-top:1.5rem;" class="term">
+          <div class="term-h"><span class="term-t">⬡ LIVE SCRIPT STATUS</span><div class="term-dots"><div class="td" style="background:#ff5f56;"></div><div class="td" style="background:#ffbd2e;"></div><div class="td" style="background:#27c93f;"></div></div></div>
+          <div class="term-body" id="termFeed">
+            <div class="tl"><span class="tt">[INIT]</span><span class="tg">✓ Magic Script v3.2 loaded</span></div>
+            <div class="tl"><span class="tt">[SYS]</span><span class="tb">◉ Auto-update server: online</span></div>
+            <div class="tl"><span class="tt">[SYS]</span><span class="tg">✓ All products: active</span></div>
+            <div class="tl"><span class="tt">[SYS]</span><span class="ty">⚡ Support team: online</span></div>
+            <div class="tl"><span class="tt">[SYS]</span><span class="tw">Awaiting orders... <span class="tc"></span></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="si">
+    <div class="rv" style="margin-bottom:3rem;">
+      <div class="stag">// FREQUENTLY ASKED</div>
+      <h2 class="stitle">Got <em>Questions?</em></h2>
+    </div>
+    <div class="faq-list" id="faqList">
+      <!-- FAQs rendered by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- SUPPORT -->
+<section id="support">
+  <div class="si">
+    <div class="rv" style="text-align:center;margin-bottom:1rem;">
+      <div class="stag" style="text-align:center;">// SUPPORT CENTER</div>
+      <h2 class="stitle" style="text-align:center;">We're Here to <em>Help</em></h2>
+    </div>
+    <!-- TEAM -->
+    <div class="rv" style="margin-bottom:2.5rem;">
+      <div class="stag">// SUPPORT TEAM</div>
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="team-avatar" style="background:linear-gradient(135deg,var(--g),#059669);">AH</div>
+          <div>
+            <div class="team-name">Ahmad (Owner)</div>
+            <div class="team-role">Lead Developer · Quotex Expert</div>
+            <div class="team-online">Online · Responds in &lt;5 min</div>
+            <a href="https://t.me/AhmadTrader3" target="_blank" style="display:inline-block;margin-top:.5rem;font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--b);text-decoration:none;">@AhmadTrader3 →</a>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar" style="background:linear-gradient(135deg,var(--b),#1d4ed8);">SB</div>
+          <div>
+            <div class="team-name">Support Bot</div>
+            <div class="team-role">Automated · 24/7 Active</div>
+            <div class="team-online">Always Online · Instant Reply</div>
+            <a href="https://t.me/AHMAD_DEVELPER" target="_blank" style="display:inline-block;margin-top:.5rem;font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--b);text-decoration:none;">@AHMAD_DEVELPER →</a>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar" style="background:linear-gradient(135deg,var(--y),#d97706);">TM</div>
+          <div>
+            <div class="team-name">Tech Support</div>
+            <div class="team-role">Script Installation Help</div>
+            <div class="team-online">Online · 9AM–12AM PKT</div>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar" style="background:linear-gradient(135deg,var(--r),#9f1239);">CS</div>
+          <div>
+            <div class="team-name">Customer Success</div>
+            <div class="team-role">Orders · Payments · Billing</div>
+            <div class="team-online">Online · 10AM–10PM PKT</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="support-wrap">
+      <!-- TICKET FORM -->
+      <div class="support-form rv">
+        <h3>📨 Submit a Support Ticket</h3>
+        <div class="form-group">
+          <label>YOUR NAME</label>
+          <input type="text" id="f-name" placeholder="Enter your name"/>
+        </div>
+        <div class="form-group">
+          <label>TELEGRAM USERNAME</label>
+          <input type="text" id="f-tg" placeholder="@yourusername"/>
+        </div>
+        <div class="form-group">
+          <label>SUBJECT / ISSUE TYPE</label>
+          <select id="f-sub">
+            <option>Script not working</option>
+            <option>Payment issue</option>
+            <option>Need installation help</option>
+            <option>Want to order a product</option>
+            <option>Request custom bot</option>
+            <option>General question</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>MESSAGE</label>
+          <textarea id="f-msg" rows="5" placeholder="Describe your issue or question in detail..."></textarea>
+        </div>
+        <button class="submit-btn" onclick="submitTicket()">⚡ SUBMIT TICKET</button>
+        <p style="font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--muted);margin-top:.8rem;text-align:center;">For fastest help, also message <a href="https://t.me/AhmadTrader3" target="_blank" style="color:var(--b);">@AhmadTrader3</a> directly on Telegram</p>
+      </div>
+      <!-- TICKETS LIST -->
+      <div class="rv">
+        <div class="tickets-panel">
+          <div class="tp-header">
+            <span class="tp-title">Recent Tickets</span>
+            <span class="ticket-count" id="ticket-count-badge">0 open</span>
+          </div>
+          <div class="ticket-list" id="ticketList">
+            <div style="text-align:center;padding:2rem;font-family:'Share Tech Mono',monospace;font-size:.75rem;color:var(--muted);">No tickets yet. Submit one above!</div>
+          </div>
+        </div>
+        <div style="margin-top:1.5rem;background:rgba(0,207,255,.04);border:1px solid rgba(0,207,255,.15);padding:1.5rem;">
+          <div style="font-family:'Orbitron',sans-serif;font-size:.85rem;color:var(--b);margin-bottom:.7rem;">💬 Direct Telegram Support</div>
+          <p style="font-family:'Share Tech Mono',monospace;font-size:.75rem;color:var(--muted);line-height:1.8;">For the fastest response, message Ahmad directly on Telegram. He typically replies within minutes, 24 hours a day.</p>
+          <a href="https://t.me/AhmadTrader3" target="_blank" class="btn btn-ghost" style="display:inline-block;margin-top:1rem;font-size:.75rem;padding:.7rem 1.5rem;">OPEN TELEGRAM →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="si">
+    <div class="rv" style="text-align:center;margin-bottom:3rem;">
+      <div class="stag" style="text-align:center;">// COMMUNITY</div>
+      <h2 class="stitle" style="text-align:center;">What <em>Traders</em> Say</h2>
+    </div>
+    <div class="rev-grid">
+      <div class="rev rv"><div class="rev-q">"</div><div class="rev-text">The Magic Script is insane. Bought it for $30 and made that back in my first week. Ahmad delivers fast and the script just works perfectly on my Android.</div><div class="rev-footer"><div class="rev-av" style="background:linear-gradient(135deg,var(--g),#059669);">ZK</div><div><div class="rev-name">@ZafarKhan_trader</div><div class="rev-sub">Quotex trader · Pakistan</div><div class="stars">★★★★★</div></div></div></div>
+      <div class="rev rv"><div class="rev-q">"</div><div class="rev-text">$40 lifetime for the ID verification bot — best investment I made. Runs flawlessly and Ahmad even customized it for my exact setup. Absolute legend.</div><div class="rev-footer"><div class="rev-av" style="background:linear-gradient(135deg,var(--b),#1d4ed8);">MR</div><div><div class="rev-name">@MustafaRizvi</div><div class="rev-sub">Bot user · Karachi</div><div class="stars">★★★★★</div></div></div></div>
+      <div class="rev rv"><div class="rev-q">"</div><div class="rev-text">The $10 trading bot is unbelievable value. Places trades while I sleep. Support is genuinely 24/7 — Ahmad replied at 3am when I had an issue!</div><div class="rev-footer"><div class="rev-av" style="background:linear-gradient(135deg,var(--y),#d97706);">AH</div><div><div class="rev-name">@AliHassan_fx</div><div class="rev-sub">Bot user · Lahore</div><div class="stars">★★★★★</div></div></div></div>
+      <div class="rev rv"><div class="rev-q">"</div><div class="rev-text">Tried the free signals bot, loved it so much I bought the full scripts package. Works perfectly on my phone. Very impressed with the quality at this price.</div><div class="rev-footer"><div class="rev-av" style="background:linear-gradient(135deg,#9b59b6,var(--b));">SK</div><div><div class="rev-name">@SaadKhattak</div><div class="rev-sub">Script user · Islamabad</div><div class="stars">★★★★★</div></div></div></div>
+      <div class="rev rv"><div class="rev-q">"</div><div class="rev-text">The price was so low I figured why not try. Best decision ever. Script is fast, clean, gets updated regularly and the support is top class.</div><div class="rev-footer"><div class="rev-av" style="background:linear-gradient(135deg,var(--g),#059669);">FA</div><div><div class="rev-name">@FaisalAwan</div><div class="rev-sub">Monthly sub · Multan</div><div class="stars">★★★★★</div></div></div></div>
+      <div class="rev rv"><div class="rev-q">"</div><div class="rev-text">Ahmad built a custom bot for me in under 2 days. Professional, fast, and very reasonable price. This guy is the real deal for Quotex tools.</div><div class="rev-footer"><div class="rev-av" style="background:linear-gradient(135deg,var(--r),#9f1239);">UM</div><div><div class="rev-name">@UmarMalik</div><div class="rev-sub">Custom bot · Faisalabad</div><div class="stars">★★★★★</div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="flogo">AHMAD DEVELOPER 🤖👾</div>
+  <div class="flinks">
+    <a href="https://t.me/AHMAD_DEVELPER" target="_blank">CHANNEL</a>
+    <a href="https://t.me/AhmadTrader3" target="_blank">ORDER</a>
+    <a href="https://ahmad-bhai-signals-bot.vercel.app/" target="_blank">SIGNALS BOT</a>
+    <a href="https://ahmad-bhai-img-hosting.vercel.app/" target="_blank">IMAGE HOST</a>
+    <a href="https://t.me/ahmad_bhai_media_downloader_bot" target="_blank">MEDIA BOT</a>
+    <a href="#" onclick="openAdmin();return false;">ADMIN</a>
+  </div>
+  <div class="fcopy">© 2026 AHMAD DEVELOPER · ALL RIGHTS RESERVED · @AHMAD_DEVELPER</div>
+</footer>
+
+<!-- ═══════════════ ADMIN PANEL ═══════════════ -->
+<div id="admin-overlay">
+  <div class="admin-panel">
+    <div class="ap-header">
+      <div class="ap-title">⚙ ADMIN CONTROL PANEL</div>
+      <button class="ap-close" onclick="closeAdmin()">✕</button>
+    </div>
+    <!-- LOGIN -->
+    <div id="admin-login">
+      <div class="login-box">
+        <h3>🔐 ADMIN LOGIN</h3>
+        <input type="password" id="admin-pw" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')checkLogin()"/>
+        <br/>
+        <button class="btn btn-g" style="width:100%;margin-top:.5rem;" onclick="checkLogin()">LOGIN →</button>
+        <p style="font-family:'Share Tech Mono',monospace;font-size:.62rem;color:var(--muted);margin-top:1rem;">Default password: <span style="color:var(--g);">ahmad786</span></p>
+      </div>
+    </div>
+    <!-- PANEL CONTENT -->
+    <div id="admin-content" style="display:none;">
+      <div class="ap-tabs">
+        <button class="ap-tab act" onclick="apTab(this,'ap-dash')">📊 Dashboard</button>
+        <button class="ap-tab" onclick="apTab(this,'ap-prices')">💰 Prices</button>
+        <button class="ap-tab" onclick="apTab(this,'ap-tickets')">🎫 Tickets</button>
+        <button class="ap-tab" onclick="apTab(this,'ap-faq')">❓ FAQs</button>
+        <button class="ap-tab" onclick="apTab(this,'ap-payment')">💳 Payment</button>
+        <button class="ap-tab" onclick="apTab(this,'ap-settings')">⚙ Settings</button>
+      </div>
+      <div class="ap-body">
+        <!-- DASHBOARD -->
+        <div id="ap-dash" class="ap-section act">
+          <div class="ap-stats">
+            <div class="aps"><div class="aps-n" id="dash-tickets">0</div><div class="aps-l">TOTAL TICKETS</div></div>
+            <div class="aps"><div class="aps-n" id="dash-open">0</div><div class="aps-l">OPEN TICKETS</div></div>
+            <div class="aps"><div class="aps-n" id="dash-solved">0</div><div class="aps-l">SOLVED</div></div>
+            <div class="aps"><div class="aps-n">24/7</div><div class="aps-l">UPTIME</div></div>
+          </div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:.75rem;color:var(--muted);margin-bottom:1rem;">CURRENT PRICING</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:2rem;">
+            <div style="background:rgba(0,255,136,.04);border:1px solid rgba(0,255,136,.15);padding:1rem;text-align:center;"><div style="font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--muted);">QUOTEX SCRIPTS</div><div style="font-family:'Orbitron',sans-serif;font-size:1.5rem;color:var(--g);" id="d-p1">$30</div><div style="font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--muted);">/month</div></div>
+            <div style="background:rgba(255,204,0,.04);border:1px solid rgba(255,204,0,.15);padding:1rem;text-align:center;"><div style="font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--muted);">ID VERIFY BOT</div><div style="font-family:'Orbitron',sans-serif;font-size:1.5rem;color:var(--y);" id="d-p2">$40</div><div style="font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--muted);">lifetime</div></div>
+            <div style="background:rgba(0,207,255,.04);border:1px solid rgba(0,207,255,.15);padding:1rem;text-align:center;"><div style="font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--muted);">TRADING BOTS</div><div style="font-family:'Orbitron',sans-serif;font-size:1.5rem;color:var(--b);" id="d-p3">$10</div><div style="font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--muted);">/month</div></div>
+          </div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:.75rem;color:var(--muted);margin-bottom:.8rem;">RECENT TICKETS</div>
+          <div id="dash-ticket-list" style="font-family:'Share Tech Mono',monospace;font-size:.72rem;color:var(--muted);">No tickets yet.</div>
+        </div>
+        <!-- PRICES -->
+        <div id="ap-prices" class="ap-section">
+          <div style="font-family:'Share Tech Mono',monospace;font-size:.75rem;color:var(--muted);margin-bottom:1.5rem;">Update product prices — changes apply instantly across the entire website.</div>
+          <div class="ap-grid">
+            <div class="ap-field">
+              <label>QUOTEX SCRIPTS PRICE ($/month)</label>
+              <input type="number" id="ap-p1" placeholder="30" min="1"/>
+            </div>
+            <div class="ap-field">
+              <label>ID VERIFY BOT PRICE ($ lifetime)</label>
+              <input type="number" id="ap-p2" placeholder="40" min="1"/>
+            </div>
+            <div class="ap-field">
+              <label>TRADING BOTS PRICE ($/month)</label>
+              <input type="number" id="ap-p3" placeholder="10" min="1"/>
+            </div>
+            <div class="ap-field">
+              <label>SIGNALS BOT PRICE</label>
+              <input type="text" id="ap-p4" placeholder="FREE"/>
+            </div>
+          </div>
+          <button class="ap-save" onclick="savePrices()">💾 SAVE & APPLY PRICES</button>
+        </div>
+        <!-- TICKETS -->
+        <div id="ap-tickets" class="ap-section">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+            <div style="font-family:'Share Tech Mono',monospace;font-size:.75rem;color:var(--muted);">Manage support tickets submitted by users.</div>
+            <button class="ap-danger" onclick="clearTickets()">🗑 CLEAR ALL</button>
+          </div>
+          <div id="ap-ticket-list">
+            <div style="font-family:'Share Tech Mono',monospace;font-size:.75rem;color:var(--muted);text-align:center;padding:2rem;">No tickets submitted yet.</div>
+          </div>
+        </div>
+        <!-- FAQ EDITOR -->
+        <div id="ap-faq" class="ap-section">
+          <div style="font-family:'Share Tech Mono',monospace;font-size:.75rem;color:var(--muted);margin-bottom:1.5rem;">Edit FAQ questions and answers shown on the website.</div>
+          <div id="faq-editor"></div>
+          <button class="ap-save" style="margin-top:1.2rem;" onclick="saveFaqs()">💾 SAVE FAQS</button>
+          <button class="btn btn-ghost" style="margin-top:1.2rem;margin-left:.8rem;" onclick="addFaqItem()">+ ADD QUESTION</button>
+        </div>
+        <!-- PAYMENT EDITOR -->
+        <div id="ap-payment" class="ap-section">
+          <div style="font-family:'Share Tech Mono',monospace;font-size:.75rem;color:var(--muted);margin-bottom:1.5rem;">Update payment details shown on the website.</div>
+          <div class="ap-grid">
+            <div class="ap-field">
+              <label>BINANCE ID</label>
+              <input type="text" id="ap-bin-id" placeholder="505638805"/>
+            </div>
+            <div class="ap-field">
+              <label>BINANCE NICKNAME</label>
+              <input type="text" id="ap-bin-nick" placeholder="AHMAD_BHAI_786"/>
+            </div>
+          </div>
+          <div class="ap-field" style="margin-bottom:1.2rem;">
+            <label>TRC20 ADDRESS</label>
+            <input type="text" id="ap-trc" placeholder="TLvd3Q1UpE8Cio8GxrqZzemSVWe8cH5Rxu"/>
+          </div>
+          <div class="ap-field" style="margin-bottom:1.2rem;">
+            <label>BINANCE QR IMAGE URL</label>
+            <input type="text" id="ap-bin-qr" placeholder="https://..."/>
+          </div>
+          <div class="ap-field" style="margin-bottom:1.5rem;">
+            <label>TRC20 QR IMAGE URL</label>
+            <input type="text" id="ap-trc-qr" placeholder="https://..."/>
+          </div>
+          <button class="ap-save" onclick="savePayment()">💾 SAVE PAYMENT DETAILS</button>
+        </div>
+        <!-- SETTINGS -->
+        <div id="ap-settings" class="ap-section">
+          <div style="font-family:'Share Tech Mono',monospace;font-size:.75rem;color:var(--muted);margin-bottom:1.5rem;">Site settings and feature toggles.</div>
+          <div class="toggle-row"><span class="toggle-label">Show Ticker Bar</span><div class="toggle on" id="tog-ticker" onclick="toggleSetting(this,'ticker')"></div></div>
+          <div class="toggle-row"><span class="toggle-label">Show Live Terminal Feed</span><div class="toggle on" id="tog-term" onclick="toggleSetting(this,'term')"></div></div>
+          <div class="toggle-row"><span class="toggle-label">Particle Animation</span><div class="toggle on" id="tog-parts" onclick="toggleSetting(this,'parts')"></div></div>
+          <div class="toggle-row"><span class="toggle-label">Custom Cursor</span><div class="toggle on" id="tog-cursor" onclick="toggleSetting(this,'cursor')"></div></div>
+          <div style="margin-top:2rem;">
+            <div class="ap-field" style="margin-bottom:1rem;">
+              <label>CHANGE ADMIN PASSWORD</label>
+              <input type="password" id="new-pw" placeholder="New password"/>
+            </div>
+            <button class="ap-save" onclick="changePw()">🔐 CHANGE PASSWORD</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
-    async function go() {
-        const btn = document.getElementById('b');
-        const code = document.getElementById('c').value;
-        if(!code) return msg("⚠️ Write something!");
+/* ════ STATE ════ */
+let state = {
+  prices:{p1:30,p2:40,p3:10,p4:'FREE'},
+  tickets:[],
+  faqs:[
+    {q:'How do I get the Quotex script after payment?',a:'After payment, send your payment screenshot or transaction hash to @AhmadTrader3 on Telegram. Your script bookmarklet will be delivered within 10 minutes, along with full installation instructions for PC and Android.'},
+    {q:'Does the script work on Android phones?',a:'Yes! The Quotex Magic Script works on both Android browsers and PC browsers. You create a bookmark on your Android browser and activate it just like on desktop. Full instructions are included.'},
+    {q:'What payment methods are accepted?',a:'We accept Binance Pay (send to ID 505638805 / nickname AHMAD_BHAI_786) and USDT via TRC20 network (address: TLvd3Q1UpE8Cio8GxrqZzemSVWe8cH5Rxu). Make sure to use TRC20 network for crypto payments.'},
+    {q:'Is the $40 ID Verification Bot really a one-time lifetime payment?',a:'Yes, absolutely. You pay $40 once and own the bot forever. It will be custom-built for your specific requirements and delivered via Telegram. No monthly fees, no renewals.'},
+    {q:'What is the difference between the Trading Bot ($10) and Quotex Scripts ($30)?',a:'The Trading Bot ($10/month) automatically places trades on Quotex based on configured logic. The Quotex Scripts ($30/month) are a full suite of interface enhancement tools — including the Magic Script — that improve your Quotex trading platform experience. Many traders use both together.'},
+    {q:'Will I get updates when new script versions are released?',a:'Yes! As long as your subscription is active, you receive all new script versions automatically. Ahmad announces updates in the @AHMAD_DEVELPER Telegram channel, and the delivery is instant.'},
+    {q:'What if the script stops working?',a:'Contact @AhmadTrader3 immediately on Telegram. Support is available 24/7 and issues are resolved very quickly, usually within minutes. Script problems are rare as updates are pushed proactively.'},
+    {q:'Can I get a custom bot built?',a:'Yes! Contact @AhmadTrader3 on Telegram with your requirements. Ahmad builds custom Telegram bots and trading tools at very affordable prices. The ID Verification Bot is one example of a custom build.'},
+    {q:'How do I cancel my monthly subscription?',a:'Simply stop renewing — there are no long-term contracts. Monthly subscriptions are manual renewals, so just don\'t pay next month if you wish to stop. Contact @AhmadTrader3 for any billing questions.'},
+    {q:'Is my payment safe? How do I know I\'ll receive the script?',a:'Ahmad has hundreds of satisfied customers in the @AHMAD_DEVELPER channel. You can see the community and real reviews. For peace of mind, start with the free Signals Bot to test before purchasing. Payment is straightforward crypto — no chargebacks, no risk.'}
+  ],
+  payment:{binId:'505638805',binNick:'AHMAD_BHAI_786',trc:'TLvd3Q1UpE8Cio8GxrqZzemSVWe8cH5Rxu',binQr:'https://i.ibb.co/d0tqPPnv/d505c6b3e66d.png',trcQr:'https://i.ibb.co/SwNqpycL/trc-qx.jpg'},
+  adminPw:'ahmad786',
+  settings:{ticker:true,term:true,parts:true,cursor:true}
+};
 
-        btn.disabled = true;
-        btn.innerText = "⏳ Processing...";
+/* Load from localStorage */
+try{const s=localStorage.getItem('ahmadDevState');if(s){const p=JSON.parse(s);state={...state,...p};}}catch(e){}
 
-        try {
-            const res = await fetch('/api/paste', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ code, title: document.getElementById('t').value, format: document.getElementById('f').value })
-            });
-            const data = await res.json();
-            if(data.success) {
-                document.getElementById('rb').style.display = 'block';
-                document.getElementById('rl').innerText = data.url;
-                document.getElementById('rl').href = data.url;
-                btn.innerText = "✅ Done";
-            } else {
-                msg("❌ " + data.message);
-                reset(btn);
-            }
-        } catch (e) {
-            msg("❌ Server Connection Error!");
-            reset(btn);
-        }
+function saveState(){try{localStorage.setItem('ahmadDevState',JSON.stringify(state));}catch(e){}}
+
+/* ════ INIT ════ */
+window.addEventListener('load',()=>{
+  applyPrices();
+  renderFaqs();
+  renderTickets();
+  renderAdminTickets();
+  populateAdminFields();
+});
+
+/* ════ PRICES ════ */
+function applyPrices(){
+  const f=v=>`$${v}`;
+  document.querySelectorAll('#p1-price,#disp-p1').forEach(e=>e&&(e.textContent=f(state.prices.p1)));
+  document.querySelectorAll('#p2-price,#disp-p2').forEach(e=>e&&(e.textContent=f(state.prices.p2)));
+  document.querySelectorAll('#p3-price,#disp-p3,#disp-sp3').forEach(e=>e&&(e.textContent=f(state.prices.p3)));
+  const sb=document.getElementById('sb-price');if(sb)sb.textContent=`"$${state.prices.p1} / month"`;
+  // ticker
+  document.querySelectorAll('.ti').forEach((t,i)=>{
+    if(i===0||i===8)t.textContent=`QUOTEX SCRIPTS $${state.prices.p1}/MONTH`;
+    if(i===1||i===9)t.textContent=`TRADING BOT $${state.prices.p3}/MONTH`;
+    if(i===2||i===10)t.textContent=`ID VERIFY BOT $${state.prices.p2} LIFETIME`;
+  });
+  // dashboard
+  const d1=document.getElementById('d-p1');if(d1)d1.textContent=f(state.prices.p1);
+  const d2=document.getElementById('d-p2');if(d2)d2.textContent=f(state.prices.p2);
+  const d3=document.getElementById('d-p3');if(d3)d3.textContent=f(state.prices.p3);
+}
+
+function savePrices(){
+  const p1=parseInt(document.getElementById('ap-p1').value)||state.prices.p1;
+  const p2=parseInt(document.getElementById('ap-p2').value)||state.prices.p2;
+  const p3=parseInt(document.getElementById('ap-p3').value)||state.prices.p3;
+  const p4=document.getElementById('ap-p4').value||state.prices.p4;
+  state.prices={p1,p2,p3,p4};
+  saveState();applyPrices();
+  showToast('✓ Prices updated across site!');
+}
+
+/* ════ FAQ ════ */
+function renderFaqs(){
+  const list=document.getElementById('faqList');
+  if(!list)return;
+  list.innerHTML='';
+  state.faqs.forEach((f,i)=>{
+    const item=document.createElement('div');
+    item.className='faq-item';
+    item.innerHTML=`<div class="faq-q" onclick="toggleFaq(this.parentElement)"><span>${f.q}</span><span class="faq-arr">+</span></div><div class="faq-a"><p>${f.a}</p></div>`;
+    list.appendChild(item);
+  });
+}
+function toggleFaq(el){el.classList.toggle('open');}
+
+function renderFaqEditor(){
+  const ed=document.getElementById('faq-editor');
+  if(!ed)return;
+  ed.innerHTML='';
+  state.faqs.forEach((f,i)=>{
+    const d=document.createElement('div');
+    d.style.cssText='background:rgba(0,0,0,.2);border:1px solid var(--border);padding:1.2rem;margin-bottom:.8rem;';
+    d.innerHTML=`
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem;">
+        <span style="font-family:Share Tech Mono,monospace;font-size:.65rem;color:var(--muted);">FAQ #${i+1}</span>
+        <button onclick="removeFaq(${i})" style="background:rgba(255,51,102,.1);border:1px solid rgba(255,51,102,.3);color:var(--r);font-family:Share Tech Mono,monospace;font-size:.6rem;padding:.2rem .6rem;cursor:pointer;">REMOVE</button>
+      </div>
+      <div class="ap-field" style="margin-bottom:.7rem;"><label>QUESTION</label><input type="text" value="${f.q.replace(/"/g,'&quot;')}" onchange="state.faqs[${i}].q=this.value"/></div>
+      <div class="ap-field"><label>ANSWER</label><textarea rows="3" style="width:100%;background:rgba(0,0,0,.4);border:1px solid var(--border);color:var(--text);padding:.7rem;font-family:Share Tech Mono,monospace;font-size:.73rem;resize:vertical;" onchange="state.faqs[${i}].a=this.value">${f.a}</textarea></div>
+    `;
+    ed.appendChild(d);
+  });
+}
+function addFaqItem(){state.faqs.push({q:'New Question',a:'Answer here.'});renderFaqEditor();}
+function removeFaq(i){state.faqs.splice(i,1);renderFaqEditor();}
+function saveFaqs(){saveState();renderFaqs();showToast('✓ FAQs saved!');}
+
+/* ════ TICKETS ════ */
+let ticketIdCounter=1000;
+function submitTicket(){
+  const name=document.getElementById('f-name').value.trim();
+  const tg=document.getElementById('f-tg').value.trim();
+  const sub=document.getElementById('f-sub').value;
+  const msg=document.getElementById('f-msg').value.trim();
+  if(!name||!tg||!msg){showToast('⚠ Please fill all fields!','red');return;}
+  const ticket={id:'#'+String(++ticketIdCounter),name,tg,subject:sub,message:msg,status:'open',time:new Date().toLocaleString()};
+  state.tickets.unshift(ticket);
+  saveState();renderTickets();renderAdminTickets();updateDashboard();
+  document.getElementById('f-name').value='';
+  document.getElementById('f-tg').value='';
+  document.getElementById('f-msg').value='';
+  showToast('✓ Ticket submitted! We\'ll reply on Telegram soon.');
+}
+
+function renderTickets(){
+  const list=document.getElementById('ticketList');
+  const badge=document.getElementById('ticket-count-badge');
+  if(!list)return;
+  const open=state.tickets.filter(t=>t.status==='open').length;
+  if(badge)badge.textContent=open+' open';
+  if(state.tickets.length===0){list.innerHTML='<div style="text-align:center;padding:2rem;font-family:Share Tech Mono,monospace;font-size:.75rem;color:var(--muted);">No tickets yet. Submit one above!</div>';return;}
+  list.innerHTML=state.tickets.slice(0,5).map(t=>`
+    <div class="ticket">
+      <div class="ticket-top"><span class="ticket-id">${t.id} · ${t.time}</span><span class="ticket-status ${t.status}">${t.status.toUpperCase()}</span></div>
+      <div class="ticket-subject">${t.subject}</div>
+      <div class="ticket-meta">From: ${t.name} · ${t.tg}</div>
+    </div>
+  `).join('');
+}
+
+function renderAdminTickets(){
+  const list=document.getElementById('ap-ticket-list');
+  if(!list)return;
+  if(state.tickets.length===0){list.innerHTML='<div style="font-family:Share Tech Mono,monospace;font-size:.75rem;color:var(--muted);text-align:center;padding:2rem;">No tickets yet.</div>';return;}
+  list.innerHTML=state.tickets.map((t,i)=>`
+    <div class="ap-ticket">
+      <div class="apt-info">
+        <div class="apt-id">${t.id} · ${t.time}</div>
+        <div class="apt-sub">${t.subject}</div>
+        <div class="apt-from">${t.name} · ${t.tg}</div>
+        <div style="font-family:Share Tech Mono,monospace;font-size:.65rem;color:var(--muted);margin-top:.3rem;">${t.message}</div>
+      </div>
+      <div class="apt-actions">
+        <span class="ticket-status ${t.status}" style="margin-right:.3rem;">${t.status}</span>
+        ${t.status!=='solved'?`<button class="apt-btn solve" onclick="solveTicket(${i})">SOLVE</button>`:''}
+        <button class="apt-btn del" onclick="deleteTicket(${i})">DEL</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function solveTicket(i){state.tickets[i].status='solved';saveState();renderTickets();renderAdminTickets();updateDashboard();showToast('✓ Ticket marked solved!');}
+function deleteTicket(i){state.tickets.splice(i,1);saveState();renderTickets();renderAdminTickets();updateDashboard();showToast('Ticket deleted.');}
+function clearTickets(){if(!confirm('Clear all tickets?'))return;state.tickets=[];saveState();renderTickets();renderAdminTickets();updateDashboard();showToast('All tickets cleared.');}
+
+function updateDashboard(){
+  const total=state.tickets.length;
+  const open=state.tickets.filter(t=>t.status==='open').length;
+  const solved=state.tickets.filter(t=>t.status==='solved').length;
+  const dt=document.getElementById('dash-tickets');if(dt)dt.textContent=total;
+  const do2=document.getElementById('dash-open');if(do2)do2.textContent=open;
+  const ds=document.getElementById('dash-solved');if(ds)ds.textContent=solved;
+  const dl=document.getElementById('dash-ticket-list');
+  if(dl)dl.innerHTML=state.tickets.length?state.tickets.slice(0,3).map(t=>`<div style="padding:.5rem 0;border-bottom:1px solid var(--border);">${t.id} — <span style="color:var(--text);">${t.subject}</span> — <span style="color:${t.status==='solved'?'var(--g)':'var(--y)'};">${t.status}</span></div>`).join(''):'No tickets yet.';
+}
+
+/* ════ PAYMENT ════ */
+function savePayment(){
+  state.payment.binId=document.getElementById('ap-bin-id').value||state.payment.binId;
+  state.payment.binNick=document.getElementById('ap-bin-nick').value||state.payment.binNick;
+  state.payment.trc=document.getElementById('ap-trc').value||state.payment.trc;
+  const bq=document.getElementById('ap-bin-qr').value;
+  const tq=document.getElementById('ap-trc-qr').value;
+  if(bq)state.payment.binQr=bq;
+  if(tq)state.payment.trcQr=tq;
+  saveState();applyPayment();
+  showToast('✓ Payment details updated!');
+}
+function applyPayment(){
+  const bi=document.getElementById('bin-id');if(bi)bi.textContent=state.payment.binId;
+  const bn=document.getElementById('bin-nick');if(bn)bn.textContent=state.payment.binNick;
+  const ta=document.getElementById('trc-addr');if(ta)ta.textContent=state.payment.trc;
+  document.querySelectorAll('.pay-qr img').forEach((img,i)=>{
+    if(i===0)img.src=state.payment.binQr;
+    if(i===1)img.src=state.payment.trcQr;
+  });
+}
+
+/* ════ POPULATE ADMIN FIELDS ════ */
+function populateAdminFields(){
+  const set=(id,val)=>{const el=document.getElementById(id);if(el)el.value=val;};
+  set('ap-p1',state.prices.p1);set('ap-p2',state.prices.p2);
+  set('ap-p3',state.prices.p3);set('ap-p4',state.prices.p4);
+  set('ap-bin-id',state.payment.binId);set('ap-bin-nick',state.payment.binNick);
+  set('ap-trc',state.payment.trc);set('ap-bin-qr',state.payment.binQr);
+  set('ap-trc-qr',state.payment.trcQr);
+  updateDashboard();
+}
+
+/* ════ SETTINGS ════ */
+function toggleSetting(el,key){
+  el.classList.toggle('on');
+  state.settings[key]=el.classList.contains('on');
+  saveState();
+  if(key==='ticker'){const tb=document.querySelector('.ticker-bar');if(tb)tb.style.display=state.settings.ticker?'block':'none';}
+  if(key==='parts'){document.getElementById('cv').style.display=state.settings.parts?'block':'none';}
+  if(key==='cursor'){document.getElementById('cur1').style.display=document.getElementById('cur2').style.display=state.settings.cursor?'block':'none';}
+  showToast('✓ Setting saved!');
+}
+function changePw(){
+  const pw=document.getElementById('new-pw').value.trim();
+  if(!pw){showToast('⚠ Enter a new password!','red');return;}
+  state.adminPw=pw;saveState();
+  document.getElementById('new-pw').value='';
+  showToast('✓ Password changed!');
+}
+
+/* ════ ADMIN UI ════ */
+let adminLoggedIn=false;
+function openAdmin(){document.getElementById('admin-overlay').classList.add('open');}
+function closeAdmin(){document.getElementById('admin-overlay').classList.remove('open');}
+function checkLogin(){
+  const pw=document.getElementById('admin-pw').value;
+  if(pw===state.adminPw){
+    adminLoggedIn=true;
+    document.getElementById('admin-login').style.display='none';
+    document.getElementById('admin-content').style.display='block';
+    renderFaqEditor();updateDashboard();populateAdminFields();
+  } else {
+    showToast('⚠ Wrong password!','red');
+  }
+}
+function apTab(btn,secId){
+  document.querySelectorAll('.ap-tab').forEach(t=>t.classList.remove('act'));
+  document.querySelectorAll('.ap-section').forEach(s=>s.classList.remove('act'));
+  btn.classList.add('act');
+  const sec=document.getElementById(secId);if(sec)sec.classList.add('act');
+  if(secId==='ap-faq')renderFaqEditor();
+  if(secId==='ap-dash'){updateDashboard();populateAdminFields();}
+}
+document.getElementById('admin-overlay').addEventListener('click',function(e){if(e.target===this)closeAdmin();});
+
+/* ════ COPY ════ */
+function copyText(text,label){
+  navigator.clipboard.writeText(text).then(()=>showToast(`✓ ${label} copied!`)).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast(`✓ ${label} copied!`);
+  });
+}
+
+/* ════ TOAST ════ */
+function showToast(msg,type='green'){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.style.background=type==='red'?'var(--r)':'var(--g)';
+  t.style.color=type==='red'?'#fff':'#020a05';
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+/* ════ PARTICLES ════ */
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+let W,H,pts=[];
+function resize(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;}
+resize();window.addEventListener('resize',resize);
+for(let i=0;i<70;i++)pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.28,vy:(Math.random()-.5)*.28,r:Math.random()*1.4+.3,a:Math.random()});
+(function draw(){
+  ctx.clearRect(0,0,W,H);
+  pts.forEach(p=>{
+    p.x+=p.vx;p.y+=p.vy;
+    if(p.x<0)p.x=W;if(p.x>W)p.x=0;
+    if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(0,255,136,${p.a*.35})`;ctx.fill();
+  });
+  for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+    const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);
+    if(d<110){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.strokeStyle=`rgba(0,255,136,${(1-d/110)*.055})`;ctx.lineWidth=.5;ctx.stroke();}
+  }
+  requestAnimationFrame(draw);
+})();
+
+/* ════ CURSOR ════ */
+const c1=document.getElementById('cur1'),c2=document.getElementById('cur2');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;c1.style.left=mx+'px';c1.style.top=my+'px';});
+(function animC(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;c2.style.left=rx+'px';c2.style.top=ry+'px';requestAnimationFrame(animC);})();
+document.querySelectorAll('a,button,.pc,.pay-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{c2.querySelector('.cur-ring').style.cssText='width:50px;height:50px;border-color:rgba(0,255,136,.85);';});
+  el.addEventListener('mouseleave',()=>{c2.querySelector('.cur-ring').style.cssText='width:34px;height:34px;border-color:rgba(0,255,136,.55);';});
+});
+
+/* ════ SCROLL REVEAL ════ */
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vi');});},{threshold:.08});
+document.querySelectorAll('.rv,.rvl,.rvr').forEach(el=>obs.observe(el));
+
+/* ════ LIVE TERMINAL FEED ════ */
+const feedLines=[
+  {c:'tg',m:'✓ New order → quotex_scripts · @NewTrader1'},
+  {c:'tb',m:'◉ Signal generated → EUR/USD · CALL · 89%'},
+  {c:'tg',m:'✓ Script delivered → @user_2847 · setup complete'},
+  {c:'ty',m:'⚡ Auto bot trade #4821 → WIN'},
+  {c:'tg',m:'✓ New subscriber → channel: 215'},
+  {c:'tb',m:'◉ ID verify bot → new client onboarded'},
+  {c:'tg',m:'✓ Payment confirmed → Bot · $10 · 1 month'},
+  {c:'ty',m:'⚡ Magic Script v3.2 → all users updated'},
+  {c:'tg',m:'✓ Support ticket resolved → 2min response'},
+  {c:'tb',m:'◉ Signal → GBP/USD · PUT · 91%'},
+];
+let fi=0;
+const termEl=document.getElementById('termFeed');
+function addTermLine(){
+  if(!termEl||!state.settings.term)return;
+  const l=feedLines[fi%feedLines.length];fi++;
+  const now=new Date();
+  const ts=`[${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}]`;
+  termEl.querySelectorAll('.tc').forEach(c=>c.remove());
+  const d=document.createElement('div');d.className='tl';
+  d.innerHTML=`<span class="tt">${ts}</span><span class="${l.c}">${l.m} <span class="tc"></span></span>`;
+  termEl.appendChild(d);
+  termEl.scrollTop=termEl.scrollHeight;
+  if(termEl.children.length>20)termEl.removeChild(termEl.children[0]);
+}
+setInterval(addTermLine,3000);
+
+/* ════ NAV ACTIVE ════ */
+window.addEventListener('scroll',()=>{
+  document.querySelectorAll('section[id]').forEach(sec=>{
+    const top=sec.getBoundingClientRect().top;
+    if(top<120&&top>-sec.offsetHeight+120){
+      document.querySelectorAll('nav a[href]').forEach(a=>{
+        a.style.color=a.getAttribute('href')==='#'+sec.id?'var(--g)':'';
+      });
     }
-    function msg(m) { const t = document.getElementById('toast'); t.innerText = m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 3000); }
-    function reset(b) { b.disabled = false; b.innerText = "🚀 Create Paste"; }
+  });
+});
 </script>
 </body>
 </html>
