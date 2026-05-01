@@ -496,18 +496,34 @@ function addLog(action,detail=''){
    AUTH
 ═════════════════════════════ */
 function doAdminLogin(){
-  const u=document.getElementById('adm-user').value.trim();
-  const p=document.getElementById('adm-pw').value;
-  const err=document.getElementById('login-err');
-  DB=loadDB();
-  if(!u||!p){showErr(err,'Fill all fields.');return;}
-  if(u===DB.admin.username&&p===DB.admin.password){
-    adminLoggedIn=true;
-    showPage('page-admin');
+  const u = document.getElementById('adm-user').value.trim();
+  const p = document.getElementById('adm-pw').value;
+  const err = document.getElementById('login-err');
+  
+  // Reload DB to make sure we have latest credentials
+  DB = loadDB();
+  
+  if(!u || !p){
+    err.textContent = 'Fill all fields.';
+    err.classList.add('show');
+    return;
+  }
+  
+  if(u === DB.admin.username && p === DB.admin.password){
+    adminLoggedIn = true;
+    // Direct display change instead of calling showPage (just in case)
+    document.getElementById('page-login').classList.remove('active');
+    document.getElementById('page-admin').classList.add('active');
+    
     refreshAll();
     addLog('Admin Login','Successful');
-  } else showErr(err,'Invalid credentials.');
+    showToast('Welcome Ahmad Bhai!','green');
+  } else {
+    err.textContent = 'Invalid credentials.';
+    err.classList.add('show');
+  }
 }
+  
 function adminLogout(){adminLoggedIn=false;showPage('page-login');showToast('Logged out.','green');}
 
 /* ═════════════════════════════
