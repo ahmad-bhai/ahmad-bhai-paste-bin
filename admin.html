@@ -440,9 +440,6 @@ tr:hover td{background:rgba(0,255,136,.015);}
 </div>
 
 <script>
-  /* ═════════════════════════════
-   DB & STATE - FIXED
-═════════════════════════════ */
 /* ═════════════════════════════
    DB & STATE - FIXED BY AHMADDEV
 ═════════════════════════════ */
@@ -525,82 +522,6 @@ function showToast(msg, type = 'green') {
     setTimeout(() => t.className = 'toast', 3000);
 }
 
-/* ═════════════════════════════
-   SYSTEM UTILS
-═════════════════════════════ */
-function refreshAll() {
-    DB = loadDB();
-    renderDash();
-    updateNotifDots();
-}
-
-function updateNotifDots() {
-    const pendDep = DB.transactions.filter(t => t.type === 'deposit' && t.status === 'pending').length;
-    const pendWd = DB.transactions.filter(t => t.type === 'withdrawal' && t.status === 'pending').length;
-    const pendVerif = DB.users.filter(u => u.verificationStatus === 'pending').length;
-    
-    if(document.getElementById('nb-deps')) document.getElementById('nb-deps').style.display = pendDep > 0 ? 'inline-block' : 'none';
-    if(document.getElementById('nb-wds')) document.getElementById('nb-wds').style.display = pendWd > 0 ? 'inline-block' : 'none';
-    if(document.getElementById('nb-verifs')) document.getElementById('nb-verifs').style.display = pendVerif > 0 ? 'inline-block' : 'none';
-}
-
-function renderDash() {
-    const users = DB.users || [];
-    const txs = DB.transactions || [];
-    
-    const totalDep = txs.filter(t => t.type === 'deposit' && t.status === 'approved').reduce((s, t) => s + (Number(t.amount) || 0), 0);
-    
-    if(document.getElementById('d-users')) document.getElementById('d-users').textContent = users.length;
-    if(document.getElementById('d-balance')) document.getElementById('d-balance').textContent = '$' + totalDep.toFixed(2);
-}
-
-function aTab(el, secId) {
-    document.querySelectorAll('.sb-nav a').forEach(a => a.classList.remove('act'));
-    if (el) el.classList.add('act');
-    document.querySelectorAll('.dsec').forEach(s => s.classList.remove('act'));
-    const sec = document.getElementById(secId);
-    if (sec) sec.classList.add('act');
-}
-
-// Global Log Helper
-function addLog(action, detail = '') {
-    DB.logs.unshift({ id: 'L' + Date.now(), action, detail, time: new Date().toISOString() });
-    saveDB(DB);
-}
-
-function saveDB(db) {
-    localStorage.setItem('ahmadDevDB', JSON.stringify(db));
-}
-
-// Initial Load
-window.addEventListener('load', () => {
-    document.getElementById('loadingOverlay').style.display = 'none';
-    console.log("System Ready.");
-});
-  
-  
-function adminLogout(){adminLoggedIn=false;showPage('page-login');showToast('Logged out.','green');}
-
-/* ═════════════════════════════
-   NAVIGATION
-═════════════════════════════ */
-function aTab(el,secId){
-  document.querySelectorAll('.sb-nav a').forEach(a=>a.classList.remove('act'));
-  if(el)el.classList.add('act');
-  document.querySelectorAll('.dsec').forEach(s=>s.classList.remove('act'));
-  const sec=document.getElementById(secId);if(sec)sec.classList.add('act');
-  // render section
-  if(secId==='sec-dash')renderDash();
-  if(secId==='sec-users')renderUsers();
-  if(secId==='sec-deposits')renderDeposits();
-  if(secId==='sec-withdrawals')renderWithdrawals();
-  if(secId==='sec-verifications')renderVerifications();
-  if(secId==='sec-orders')renderOrders();
-  if(secId==='sec-products')renderProducts();
-  if(secId==='sec-balance')renderBalanceSelect();
-  if(secId==='sec-settings')loadSettings();
-  if(secId==='sec-logs')renderLogs();
-}
 
 function refreshAll(){
   DB=loadDB();
@@ -1163,21 +1084,6 @@ function showToast(msg,type='green'){
 document.querySelectorAll('.modal-overlay').forEach(m=>{m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');});});
 
 window.addEventListener('load',()=>{document.getElementById('loadingOverlay').style.display='none';});
-/* ═════════════════════════════
-   INITIALIZE & FORCE UNLOAD
-═════════════════════════════ */
-window.addEventListener('load', () => {
-    // Check if DB is loaded
-    if(!DB) DB = loadDB();
-    
-    // Hide loading overlay immediately
-    const loader = document.getElementById('loadingOverlay');
-    if(loader) {
-        loader.style.display = 'none';
-    }
-    console.log("Admin Panel Ready - AhmadDev");
-});
-
 </script>
 </body>
                                                  </html>
