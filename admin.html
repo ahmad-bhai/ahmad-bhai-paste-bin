@@ -33,14 +33,9 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 .fgroup input,.fgroup select,.fgroup textarea{width:100%;background:rgba(0,0,0,.4);border:1px solid var(--border);color:var(--text);padding:.8rem 1rem;font-family:'Share Tech Mono',monospace;font-size:.8rem;outline:none;transition:border-color .3s;resize:vertical;}
 .fgroup input:focus,.fgroup select:focus,.fgroup textarea:focus{border-color:rgba(0,255,136,.4);}
 .fgroup input::placeholder,.fgroup textarea::placeholder{color:var(--muted);}
-.fgroup select option{background:var(--bg2);}
 .fbtn{width:100%;padding:1rem;font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:700;border:none;cursor:pointer;letter-spacing:.1em;transition:all .3s;}
 .fbtn.red{background:var(--r);color:#fff;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));}
 .fbtn.red:hover{background:#ff5577;box-shadow:0 0 28px rgba(255,51,102,.4);}
-.fbtn.green{background:var(--g);color:#020a05;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));}
-.fbtn.green:hover{background:#00ffaa;box-shadow:0 0 28px rgba(0,255,136,.4);}
-.fbtn.ghost{background:transparent;color:var(--b);border:1px solid rgba(0,207,255,.3);clip-path:none;}
-.fbtn.ghost:hover{background:rgba(0,207,255,.07);}
 .err-msg{background:rgba(255,51,102,.08);border:1px solid rgba(255,51,102,.25);color:var(--r);font-family:'Share Tech Mono',monospace;font-size:.7rem;padding:.6rem 1rem;margin-bottom:1rem;display:none;}
 .err-msg.show{display:block;}
 
@@ -83,393 +78,108 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 .tbl-wrap{background:var(--panel);border:1px solid var(--border);overflow:hidden;margin-bottom:1.5rem;}
 .tbl-head{padding:1rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
 .tbl-title{font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:700;color:var(--text);}
-.tbl-search{background:rgba(0,0,0,.3);border:1px solid var(--border);color:var(--text);padding:.5rem .9rem;font-family:'Share Tech Mono',monospace;font-size:.72rem;outline:none;width:200px;}
-.tbl-search:focus{border-color:rgba(0,255,136,.35);}
-.tbl-search::placeholder{color:var(--muted);}
 table{width:100%;border-collapse:collapse;}
 th{font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--muted);letter-spacing:.18em;padding:.75rem 1.1rem;text-align:left;border-bottom:1px solid var(--border);background:rgba(0,0,0,.15);white-space:nowrap;}
 td{font-family:'Share Tech Mono',monospace;font-size:.73rem;color:var(--text);padding:.8rem 1.1rem;border-bottom:1px solid rgba(255,255,255,.03);vertical-align:middle;}
-tr:last-child td{border-bottom:none;}
-tr:hover td{background:rgba(0,255,136,.015);}
-.badge{display:inline-block;padding:.15rem .55rem;border:1px solid;font-family:'Share Tech Mono',monospace;font-size:.56rem;letter-spacing:.1em;white-space:nowrap;}
+.badge{display:inline-block;padding:.15rem .55rem;border:1px solid;font-family:'Share Tech Mono',monospace;font-size:.56rem;letter-spacing:.1em;}
 .badge.pending{color:var(--y);border-color:rgba(255,204,0,.35);background:rgba(255,204,0,.05);}
 .badge.approved{color:var(--g);border-color:rgba(0,255,136,.35);background:rgba(0,255,136,.05);}
 .badge.declined{color:var(--r);border-color:rgba(255,51,102,.35);background:rgba(255,51,102,.05);}
-.badge.active{color:var(--b);border-color:rgba(0,207,255,.35);background:rgba(0,207,255,.05);}
-.badge.verified{color:var(--g);border-color:rgba(0,255,136,.35);background:rgba(0,255,136,.05);}
-.badge.unverified{color:var(--muted);border-color:rgba(61,96,112,.35);}
-.badge.completed{color:var(--g);border-color:rgba(0,255,136,.35);background:rgba(0,255,136,.05);}
-.badge.suspended{color:var(--r);border-color:rgba(255,51,102,.35);background:rgba(255,51,102,.05);}
-
-/* action btns */
-.abtn{padding:.28rem .7rem;font-family:'Share Tech Mono',monospace;font-size:.6rem;border:1px solid;cursor:pointer;background:none;letter-spacing:.07em;transition:all .3s;white-space:nowrap;}
-.abtn.approve{color:var(--g);border-color:rgba(0,255,136,.35);}
-.abtn.approve:hover{background:rgba(0,255,136,.08);}
-.abtn.decline{color:var(--r);border-color:rgba(255,51,102,.35);}
-.abtn.decline:hover{background:rgba(255,51,102,.08);}
-.abtn.view{color:var(--b);border-color:rgba(0,207,255,.35);}
-.abtn.view:hover{background:rgba(0,207,255,.08);}
-.abtn.edit{color:var(--y);border-color:rgba(255,204,0,.35);}
-.abtn.edit:hover{background:rgba(255,204,0,.08);}
-.abtn.del{color:var(--r);border-color:rgba(255,51,102,.35);}
-.abtn.del:hover{background:rgba(255,51,102,.08);}
-.abtn.suspend{color:var(--y);border-color:rgba(255,204,0,.35);}
-.abtn.suspend:hover{background:rgba(255,204,0,.08);}
-.action-group{display:flex;gap:.4rem;flex-wrap:wrap;}
-
-/* ── MODAL ── */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:1000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px);}
-.modal-overlay.open{display:flex;}
-.modal{width:min(600px,95vw);background:var(--bg2);border:1px solid var(--border);border-top:2px solid var(--g);max-height:90vh;overflow-y:auto;}
-.modal-h{padding:1.2rem 1.8rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--bg2);z-index:5;}
-.modal-title{font-family:'Orbitron',sans-serif;font-size:.92rem;font-weight:700;color:var(--g);}
-.modal-close{background:none;border:none;color:var(--muted);font-size:1.3rem;cursor:pointer;transition:color .3s;}
-.modal-close:hover{color:var(--r);}
-.modal-body{padding:1.8rem;}
-
-/* ── IMAGE VIEWER ── */
-.img-viewer{width:100%;max-height:300px;object-fit:contain;background:rgba(0,0,0,.3);border:1px solid var(--border);margin-bottom:.8rem;}
-.img-pair{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;}
-
-/* ── SETTINGS ── */
-.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
-.settings-section{background:var(--panel);border:1px solid var(--border);padding:1.8rem;}
-.settings-section h3{font-family:'Orbitron',sans-serif;font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:1.3rem;padding-bottom:.7rem;border-bottom:1px solid var(--border);}
-.save-btn{padding:.7rem 1.8rem;background:var(--g);color:#020a05;font-family:'Orbitron',sans-serif;font-size:.78rem;font-weight:700;border:none;cursor:pointer;letter-spacing:.1em;transition:all .3s;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px));}
-.save-btn:hover{background:#00ffaa;box-shadow:0 0 20px rgba(0,255,136,.4);}
-.danger-btn{padding:.7rem 1.8rem;background:var(--r);color:#fff;font-family:'Orbitron',sans-serif;font-size:.78rem;font-weight:700;border:none;cursor:pointer;letter-spacing:.1em;transition:all .3s;}
-.danger-btn:hover{background:#ff5577;}
-
-/* ── TOGGLE ── */
-.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:.8rem 0;border-bottom:1px solid var(--border);}
-.toggle-label{font-family:'Share Tech Mono',monospace;font-size:.75rem;color:var(--text);}
-.toggle{width:42px;height:22px;background:var(--muted);border-radius:11px;cursor:pointer;position:relative;transition:background .3s;flex-shrink:0;}
-.toggle.on{background:var(--g);}
-.toggle::after{content:'';position:absolute;width:16px;height:16px;background:#fff;border-radius:50%;top:3px;left:3px;transition:left .3s;}
-.toggle.on::after{left:23px;}
-
-/* ── PRODUCT CARD EDITOR ── */
-.prod-editor{background:var(--panel);border:1px solid var(--border);padding:1.5rem;margin-bottom:.8rem;}
-.prod-editor-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;}
-.prod-editor-name{font-family:'Orbitron',sans-serif;font-size:.85rem;color:var(--text);}
-
-/* ── NOTIFICATION ── */
-.notif-dot{width:7px;height:7px;background:var(--r);border-radius:50%;display:inline-block;margin-left:.4rem;animation:npulse 1.5s infinite;}
-@keyframes npulse{0%,100%{box-shadow:0 0 0 0 rgba(255,51,102,.7);}50%{box-shadow:0 0 0 5px rgba(255,51,102,0);}}
 
 /* ── TOAST ── */
-.toast{position:fixed;bottom:2rem;right:2rem;font-family:'Share Tech Mono',monospace;font-size:.76rem;padding:.8rem 1.4rem;z-index:9999;transform:translateX(150%);transition:transform .4s;font-weight:700;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%);max-width:320px;}
+.toast{position:fixed;bottom:2rem;right:2rem;font-family:'Share Tech Mono',monospace;font-size:.76rem;padding:.8rem 1.4rem;z-index:9999;transform:translateX(150%);transition:transform .4s;font-weight:700;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%);}
 .toast.show{transform:translateX(0);}
 .toast.green{background:var(--g);color:#020a05;}
 .toast.red{background:var(--r);color:#fff;}
-.toast.blue{background:var(--b);color:#020a05;}
-
-/* EMPTY */
-.empty{text-align:center;padding:3rem;font-family:'Share Tech Mono',monospace;font-size:.75rem;color:var(--muted);}
-.empty-icon{font-size:2.2rem;margin-bottom:.7rem;}
 
 /* LOADING */
 .loading-overlay{position:fixed;inset:0;background:rgba(3,8,13,.95);z-index:9000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;}
 .loading-spinner{width:44px;height:44px;border:2px solid var(--border);border-top-color:var(--r);border-radius:50%;animation:spin .8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
-.loading-text{font-family:'Share Tech Mono',monospace;font-size:.72rem;color:var(--muted);letter-spacing:.2em;}
-
-/* MOBILE */
-.mob-btn{display:none;position:fixed;top:1rem;left:1rem;z-index:200;background:var(--panel);border:1px solid var(--border);color:var(--r);padding:.5rem .8rem;font-size:1.2rem;cursor:pointer;}
-@media(max-width:900px){
-  .sidebar{transform:translateX(-100%);transition:transform .3s;}
-  .sidebar.open{transform:translateX(0);}
-  .main{margin-left:0;padding:1rem;}
-  .mob-btn{display:block;}
-  .settings-grid{grid-template-columns:1fr;}
-  .stat-row{grid-template-columns:1fr 1fr;}
-}
 </style>
 </head>
 <body>
+
 <div class="gbg"></div>
 <div class="toast" id="toast"></div>
-<div class="loading-overlay" id="loadingOverlay"><div class="loading-spinner"></div><div class="loading-text">LOADING ADMIN...</div></div>
-<button class="mob-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+<div class="loading-overlay" id="loadingOverlay"><div class="loading-spinner"></div></div>
 
-<!-- ══════════ ADMIN LOGIN ══════════ -->
 <div class="page active" id="page-login">
   <div class="auth-wrap">
     <div class="auth-box">
       <div class="auth-logo">
         <div class="auth-logo-txt">⚙ ADMIN PANEL</div>
-        <div class="auth-logo-sub">// AHMADDEV PLATFORM CONTROL</div>
+        <div class="auth-logo-sub">// AHMADDEV CONTROL</div>
       </div>
-      <div style="font-family:'Orbitron',sans-serif;font-size:.9rem;color:var(--text);text-align:center;margin-bottom:1.8rem;">ADMINISTRATOR LOGIN</div>
       <div class="err-msg" id="login-err"></div>
-      <div class="fgroup"><label>ADMIN USERNAME</label><input type="text" id="adm-user" placeholder="admin"/></div>
-      <div class="fgroup"><label>ADMIN PASSWORD</label><input type="password" id="adm-pw" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAdminLogin()"/></div>
+      <div class="fgroup"><label>USERNAME</label><input type="text" id="adm-user" placeholder="admin"/></div>
+      <div class="fgroup"><label>PASSWORD</label><input type="password" id="adm-pw" placeholder="••••••••"/></div>
       <button class="fbtn red" onclick="doAdminLogin()">🔐 LOGIN TO ADMIN</button>
-      <div style="text-align:center;margin-top:1rem;font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--muted);">Default: admin / ahmad786admin</div>
-      <div style="text-align:center;margin-top:.5rem;"><a href="ahmaddev-user.html" style="font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--muted);text-decoration:none;">← Back to User Site</a></div>
     </div>
   </div>
 </div>
 
-<!-- ══════════ ADMIN DASHBOARD ══════════ -->
 <div class="page" id="page-admin">
   <div class="admin-wrap">
-    <!-- SIDEBAR -->
-    <div class="sidebar" id="sidebar">
-      <div class="sb-logo">
-        <div class="sb-logo-txt">⚙ ADMIN</div>
-        <div class="sb-logo-sub">// AHMADDEV CONTROL PANEL</div>
-      </div>
+    <div class="sidebar">
+      <div class="sb-logo"><div class="sb-logo-txt">⚙ ADMIN</div></div>
       <div class="sb-admin-badge">🔴 ADMINISTRATOR</div>
       <nav class="sb-nav">
-        <div class="section-label">OVERVIEW</div>
-        <a class="act" onclick="aTab(this,'sec-dash')"><span>📊</span>Dashboard</a>
-        <div class="section-label">MANAGE</div>
-        <a onclick="aTab(this,'sec-users')"><span>👥</span>Users <span id="nb-users"></span></a>
-        <a onclick="aTab(this,'sec-deposits')"><span>💰</span>Deposits <span id="nb-deps" class="notif-dot" style="display:none;"></span></a>
-        <a onclick="aTab(this,'sec-withdrawals')"><span>💸</span>Withdrawals <span id="nb-wds" class="notif-dot" style="display:none;"></span></a>
-        <a onclick="aTab(this,'sec-verifications')"><span>🪪</span>Verifications <span id="nb-verifs" class="notif-dot" style="display:none;"></span></a>
-        <a onclick="aTab(this,'sec-orders')"><span>🛍️</span>Orders</a>
-        <div class="section-label">CONTENT</div>
-        <a onclick="aTab(this,'sec-products')"><span>⚡</span>Products</a>
-        <a onclick="aTab(this,'sec-balance')"><span>💵</span>Adjust Balance</a>
-        <div class="section-label">SYSTEM</div>
-        <a onclick="aTab(this,'sec-settings')"><span>⚙️</span>Settings</a>
-        <a onclick="aTab(this,'sec-logs')"><span>📋</span>Activity Logs</a>
+        <a class="act" onclick="aTab(this,'sec-dash')">📊 Dashboard</a>
+        <a onclick="aTab(this,'sec-users')">👥 Users</a>
+        <a onclick="aTab(this,'sec-deposits')">💰 Deposits</a>
       </nav>
-      <div class="sb-bottom">
-        <div class="sb-logout" onclick="adminLogout()"><span>🚪</span>LOGOUT</div>
-      </div>
+      <div class="sb-bottom"><div class="sb-logout" onclick="adminLogout()">🚪 LOGOUT</div></div>
     </div>
 
-    <!-- MAIN -->
     <main class="main">
-
-      <!-- DASHBOARD -->
       <div class="dsec act" id="sec-dash">
-        <div class="page-header">
-          <div><h2>Admin <span>Dashboard</span></h2><p>// PLATFORM OVERVIEW</p></div>
-          <button class="save-btn" onclick="refreshAll()">🔄 REFRESH</button>
-        </div>
+        <div class="page-header"><h2>Admin <span>Dashboard</span></h2></div>
         <div class="stat-row">
-          <div class="scard"><div class="scard-icon">👥</div><div class="scard-val g" id="d-users">0</div><div class="scard-label">TOTAL USERS</div></div>
-          <div class="scard"><div class="scard-icon">💵</div><div class="scard-val g" id="d-balance">$0</div><div class="scard-label">TOTAL DEPOSITS</div></div>
-          <div class="scard"><div class="scard-icon">💸</div><div class="scard-val r" id="d-withdrawn">$0</div><div class="scard-label">TOTAL WITHDRAWN</div></div>
-          <div class="scard"><div class="scard-icon">⏳</div><div class="scard-val y" id="d-pending-dep">0</div><div class="scard-label">PENDING DEPOSITS</div></div>
-          <div class="scard"><div class="scard-icon">⏳</div><div class="scard-val y" id="d-pending-wd">0</div><div class="scard-label">PENDING WITHDRAWALS</div></div>
-          <div class="scard"><div class="scard-icon">🪪</div><div class="scard-val b" id="d-pending-verif">0</div><div class="scard-label">PENDING VERIFS</div></div>
-          <div class="scard"><div class="scard-icon">⚡</div><div class="scard-val g" id="d-orders">0</div><div class="scard-label">TOTAL ORDERS</div></div>
-          <div class="scard"><div class="scard-icon">👥</div><div class="scard-val b" id="d-refs">0</div><div class="scard-label">REFERRALS</div></div>
-        </div>
-        <!-- Recent activity -->
-        <div class="tbl-wrap">
-          <div class="tbl-head"><span class="tbl-title">Recent Transactions (All Users)</span></div>
-          <div id="dash-recent-tx"><div class="empty"><div class="empty-icon">📋</div>No transactions yet.</div></div>
+          <div class="scard"><div class="scard-val g" id="d-users">0</div><div class="scard-label">TOTAL USERS</div></div>
+          <div class="scard"><div class="scard-val b" id="d-balance">$0</div><div class="scard-label">TOTAL DEPOSITS</div></div>
         </div>
       </div>
 
-      <!-- USERS -->
       <div class="dsec" id="sec-users">
-        <div class="page-header">
-          <div><h2>Manage <span>Users</span></h2><p>// ALL REGISTERED USERS</p></div>
-        </div>
-        <div class="tbl-wrap">
-          <div class="tbl-head">
-            <span class="tbl-title">Users List</span>
-            <input class="tbl-search" placeholder="Search by name/email..." oninput="searchUsers(this.value)"/>
-          </div>
-          <div id="users-table"><div class="empty"><div class="empty-icon">👥</div>No users yet.</div></div>
-        </div>
+        <div class="page-header"><h2>Manage <span>Users</span></h2></div>
+        <div class="tbl-wrap" id="users-table"></div>
       </div>
 
-      <!-- DEPOSITS -->
       <div class="dsec" id="sec-deposits">
-        <div class="page-header"><div><h2>Manage <span>Deposits</span></h2><p>// APPROVE OR DECLINE DEPOSIT REQUESTS</p></div></div>
-        <div class="tbl-wrap">
-          <div class="tbl-head"><span class="tbl-title">Deposit Requests</span>
-            <div style="display:flex;gap:.5rem;">
-              <select id="dep-filter" onchange="renderDeposits()" style="background:rgba(0,0,0,.3);border:1px solid var(--border);color:var(--text);padding:.4rem .7rem;font-family:'Share Tech Mono',monospace;font-size:.68rem;outline:none;">
-                <option value="all">All</option><option value="pending">Pending</option><option value="approved">Approved</option><option value="declined">Declined</option>
-              </select>
-            </div>
-          </div>
-          <div id="deposits-table"><div class="empty"><div class="empty-icon">💰</div>No deposits yet.</div></div>
-        </div>
+        <div class="page-header"><h2>Manage <span>Deposits</span></h2></div>
+        <div class="tbl-wrap" id="deposits-table"></div>
       </div>
-
-      <!-- WITHDRAWALS -->
-      <div class="dsec" id="sec-withdrawals">
-        <div class="page-header"><div><h2>Manage <span>Withdrawals</span></h2><p>// APPROVE OR DECLINE WITHDRAWAL REQUESTS</p></div></div>
-        <div class="tbl-wrap">
-          <div class="tbl-head"><span class="tbl-title">Withdrawal Requests</span>
-            <select id="wd-filter" onchange="renderWithdrawals()" style="background:rgba(0,0,0,.3);border:1px solid var(--border);color:var(--text);padding:.4rem .7rem;font-family:'Share Tech Mono',monospace;font-size:.68rem;outline:none;">
-              <option value="all">All</option><option value="pending">Pending</option><option value="approved">Approved</option><option value="declined">Declined</option>
-            </select>
-          </div>
-          <div id="withdrawals-table"><div class="empty"><div class="empty-icon">💸</div>No withdrawals yet.</div></div>
-        </div>
-      </div>
-
-      <!-- VERIFICATIONS -->
-      <div class="dsec" id="sec-verifications">
-        <div class="page-header"><div><h2>Identity <span>Verifications</span></h2><p>// KYC DOCUMENT REVIEW</p></div></div>
-        <div id="verif-list"><div class="empty"><div class="empty-icon">🪪</div>No verification requests.</div></div>
-      </div>
-
-      <!-- ORDERS -->
-      <div class="dsec" id="sec-orders">
-        <div class="page-header"><div><h2>Script <span>Orders</span></h2><p>// ALL PURCHASES</p></div></div>
-        <div class="tbl-wrap">
-          <div class="tbl-head"><span class="tbl-title">All Orders</span></div>
-          <div id="orders-table"><div class="empty"><div class="empty-icon">🛍️</div>No orders yet.</div></div>
-        </div>
-      </div>
-
-      <!-- PRODUCTS -->
-      <div class="dsec" id="sec-products">
-        <div class="page-header">
-          <div><h2>Manage <span>Products</span></h2><p>// EDIT SCRIPTS & BOTS</p></div>
-          <button class="save-btn" onclick="addProduct()">+ ADD PRODUCT</button>
-        </div>
-        <div id="products-list"></div>
-      </div>
-
-      <!-- ADJUST BALANCE -->
-      <div class="dsec" id="sec-balance">
-        <div class="page-header"><div><h2>Adjust <span>Balance</span></h2><p>// ADD OR REMOVE USER BALANCE MANUALLY</p></div></div>
-        <div style="background:var(--panel);border:1px solid var(--border);padding:2rem;max-width:500px;">
-          <div class="fgroup">
-            <label>SELECT USER</label>
-            <select id="bal-user"><option value="">Select user...</option></select>
-          </div>
-          <div class="fgroup">
-            <label>ACTION</label>
-            <select id="bal-action">
-              <option value="add">Add Balance</option>
-              <option value="remove">Remove Balance</option>
-              <option value="set">Set Balance</option>
-            </select>
-          </div>
-          <div class="fgroup"><label>AMOUNT (USD)</label><input type="number" id="bal-amount" placeholder="Enter amount" min="0"/></div>
-          <div class="fgroup"><label>NOTE (optional)</label><input type="text" id="bal-note" placeholder="Reason for adjustment..."/></div>
-          <button class="save-btn" onclick="adjustBalance()">💵 APPLY BALANCE CHANGE</button>
-        </div>
-      </div>
-
-      <!-- SETTINGS -->
-      <div class="dsec" id="sec-settings">
-        <div class="page-header"><div><h2>Platform <span>Settings</span></h2><p>// CONFIGURE THE SYSTEM</p></div></div>
-        <div class="settings-grid">
-          <!-- Limits -->
-          <div class="settings-section">
-            <h3>💰 Transaction Limits</h3>
-            <div class="fgroup"><label>MIN DEPOSIT ($)</label><input type="number" id="s-min-dep" placeholder="10"/></div>
-            <div class="fgroup"><label>MAX DEPOSIT ($)</label><input type="number" id="s-max-dep" placeholder="50000"/></div>
-            <div class="fgroup"><label>MIN WITHDRAWAL ($)</label><input type="number" id="s-min-wd" placeholder="10"/></div>
-            <div class="fgroup"><label>MAX WITHDRAWAL ($)</label><input type="number" id="s-max-wd" placeholder="50000"/></div>
-            <div class="fgroup"><label>REFERRAL COMMISSION (%)</label><input type="number" id="s-ref-comm" placeholder="10"/></div>
-            <button class="save-btn" onclick="saveLimits()">💾 SAVE LIMITS</button>
-          </div>
-          <!-- Payment -->
-          <div class="settings-section">
-            <h3>💳 Payment Details</h3>
-            <div class="fgroup"><label>BINANCE ID</label><input type="text" id="s-bin-id" placeholder="505638805"/></div>
-            <div class="fgroup"><label>BINANCE NICKNAME</label><input type="text" id="s-bin-nick" placeholder="AHMAD_BHAI_786"/></div>
-            <div class="fgroup"><label>TRC20 ADDRESS</label><input type="text" id="s-trc" placeholder="TLvd..."/></div>
-            <div class="fgroup"><label>BINANCE QR IMAGE URL</label><input type="text" id="s-bin-qr" placeholder="https://..."/></div>
-            <div class="fgroup"><label>TRC20 QR IMAGE URL</label><input type="text" id="s-trc-qr" placeholder="https://..."/></div>
-            <button class="save-btn" onclick="savePayment()">💾 SAVE PAYMENT</button>
-          </div>
-          <!-- Admin account -->
-          <div class="settings-section">
-            <h3>🔐 Admin Account</h3>
-            <div class="fgroup"><label>NEW USERNAME</label><input type="text" id="s-adm-user" placeholder="admin"/></div>
-            <div class="fgroup"><label>NEW PASSWORD</label><input type="password" id="s-adm-pw" placeholder="New password"/></div>
-            <div class="fgroup"><label>CONFIRM PASSWORD</label><input type="password" id="s-adm-pw2" placeholder="Confirm password"/></div>
-            <button class="save-btn" onclick="saveAdminCreds()">💾 SAVE CREDENTIALS</button>
-          </div>
-          <!-- Site toggles -->
-          <div class="settings-section">
-            <h3>⚙ Site Toggles</h3>
-            <div class="toggle-row"><span class="toggle-label">Allow New Registrations</span><div class="toggle on" id="tog-reg" onclick="this.classList.toggle('on');saveSetting('allowReg',this.classList.contains('on'))"></div></div>
-            <div class="toggle-row"><span class="toggle-label">Allow Deposits</span><div class="toggle on" id="tog-dep" onclick="this.classList.toggle('on');saveSetting('allowDep',this.classList.contains('on'))"></div></div>
-            <div class="toggle-row"><span class="toggle-label">Allow Withdrawals</span><div class="toggle on" id="tog-wd" onclick="this.classList.toggle('on');saveSetting('allowWd',this.classList.contains('on'))"></div></div>
-            <div class="toggle-row"><span class="toggle-label">Maintenance Mode</span><div class="toggle" id="tog-maint" onclick="this.classList.toggle('on');saveSetting('maintenance',this.classList.contains('on'))"></div></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ACTIVITY LOGS -->
-      <div class="dsec" id="sec-logs">
-        <div class="page-header">
-          <div><h2>Activity <span>Logs</span></h2><p>// ALL PLATFORM ACTIVITY</p></div>
-          <button class="danger-btn" onclick="clearLogs()">🗑 CLEAR LOGS</button>
-        </div>
-        <div class="tbl-wrap">
-          <div class="tbl-head"><span class="tbl-title">System Logs</span></div>
-          <div id="logs-table"><div class="empty"><div class="empty-icon">📋</div>No logs yet.</div></div>
-        </div>
-      </div>
-
     </main>
-  </div>
-</div>
-
-<!-- IMAGE VIEWER MODAL -->
-<div class="modal-overlay" id="img-modal">
-  <div class="modal">
-    <div class="modal-h"><span class="modal-title" id="img-modal-title">📸 Payment Proof</span><button class="modal-close" onclick="closeModal('img-modal')">✕</button></div>
-    <div class="modal-body" id="img-modal-body"></div>
-  </div>
-</div>
-
-<!-- USER DETAIL MODAL -->
-<div class="modal-overlay" id="user-modal">
-  <div class="modal">
-    <div class="modal-h"><span class="modal-title">👤 USER DETAILS</span><button class="modal-close" onclick="closeModal('user-modal')">✕</button></div>
-    <div class="modal-body" id="user-modal-body"></div>
-  </div>
-</div>
-
-<!-- PRODUCT EDIT MODAL -->
-<div class="modal-overlay" id="prod-modal">
-  <div class="modal">
-    <div class="modal-h"><span class="modal-title" id="prod-modal-title">⚡ PRODUCT</span><button class="modal-close" onclick="closeModal('prod-modal')">✕</button></div>
-    <div class="modal-body" id="prod-modal-body"></div>
   </div>
 </div>
 
 <script>
 /* ═════════════════════════════
-   DB & STATE - FIXED BY AHMADDEV
+   DB & AUTH LOGIC - FIXED
 ═════════════════════════════ */
-function loadDB() {
+function loadDB(){
     try {
         let data = localStorage.getItem('ahmadDevDB');
         return data ? JSON.parse(data) : initDB();
-    } catch (e) {
+    } catch(e) {
         return initDB();
     }
 }
 
-function initDB() {
+function initDB(){
     const initial = {
         users: [],
         transactions: [],
         products: [
-            { id: 'p1', name: 'Quotex Scripts', icon: '⚡', desc: 'Magic Script + Fast Pro suite.', price: 30, period: 'month', badge: '★ POPULAR', badgeClass: 'g', btnClass: 'g' },
-            { id: 'p2', name: 'ID Verify Bot', icon: '🔒', desc: 'Custom Quotex ID verification bot.', price: 40, period: 'lifetime', badge: '💎 LIFETIME', badgeClass: 'y', btnClass: 'y' },
-            { id: 'p3', name: 'Trading Bots', icon: '🚀', desc: 'Auto trading bot. Set and forget.', price: 10, period: 'month', badge: '🤖 AUTO', badgeClass: 'b', btnClass: 'b' }
+            {id:'p1',name:'Quotex Scripts',price:30},
+            {id:'p2',name:'ID Verify Bot',price:40}
         ],
         settings: {
-            minDeposit: 10, maxDeposit: 50000, minWithdraw: 10, maxWithdraw: 50000,
-            refCommission: 10, allowReg: true, allowDep: true, allowWd: true,
-            maintenance: false, binanceId: '505638805', binanceNick: 'AHMAD_BHAI_786',
-            trc20: 'TLvd3Q1UpE8Cio8GxrqZzemSVWe8cH5Rxu',
-            binanceQr: 'https://i.ibb.co/d0tqPPnv/d505c6b3e66d.png',
-            trc20Qr: 'https://i.ibb.co/SwNqpycL/trc-qx.jpg'
+            minDeposit: 10,
+            admin: {username: 'admin', password: 'ahmad786admin'}
         },
-        admin: { username: 'admin', password: 'ahmad786admin' },
+        admin: {username: 'admin', password: 'ahmad786admin'},
         logs: []
     };
     localStorage.setItem('ahmadDevDB', JSON.stringify(initial));
@@ -479,645 +189,57 @@ function initDB() {
 let DB = loadDB();
 let adminLoggedIn = false;
 
-/* ═════════════════════════════
-   AUTH & NAVIGATION
-═════════════════════════════ */
-function doAdminLogin() {
+function doAdminLogin(){
     const u = document.getElementById('adm-user').value.trim();
     const p = document.getElementById('adm-pw').value;
     const err = document.getElementById('login-err');
     
-    // Ensure we have the latest DB data
     DB = loadDB();
 
-    if (!u || !p) {
-        err.textContent = 'Please enter both username and password.';
-        err.classList.add('show');
-        return;
-    }
-
-    if (u === DB.admin.username && p === DB.admin.password) {
+    if(u === DB.admin.username && p === DB.admin.password){
         adminLoggedIn = true;
         document.getElementById('page-login').classList.remove('active');
         document.getElementById('page-admin').classList.add('active');
         refreshAll();
-        showToast('Login Successful!', 'green');
+        showToast('Welcome Ahmad Bhai!', 'green');
     } else {
-        err.textContent = 'Invalid Admin Credentials!';
+        err.textContent = 'Invalid Credentials!';
         err.classList.add('show');
     }
 }
 
-function adminLogout() {
+function adminLogout(){
     adminLoggedIn = false;
     document.getElementById('page-admin').classList.remove('active');
     document.getElementById('page-login').classList.add('active');
-    showToast('Logged out.', 'red');
 }
 
-function showToast(msg, type = 'green') {
+/* ═════════════════════════════
+   NAVIGATION & UI
+═════════════════════════════ */
+function aTab(el, secId){
+    document.querySelectorAll('.sb-nav a').forEach(a => a.classList.remove('act'));
+    if(el) el.classList.add('act');
+    document.querySelectorAll('.dsec').forEach(s => s.classList.remove('act'));
+    document.getElementById(secId).classList.add('act');
+}
+
+function refreshAll(){
+    DB = loadDB();
+    document.getElementById('d-users').textContent = DB.users.length;
+    // Add more dashboard stats here
+}
+
+function showToast(msg, type){
     const t = document.getElementById('toast');
     t.textContent = msg;
     t.className = 'toast show ' + type;
     setTimeout(() => t.className = 'toast', 3000);
 }
 
-
-function refreshAll(){
-  DB=loadDB();
-  renderDash();
-  updateNotifDots();
-}
-
-function updateNotifDots(){
-  DB=loadDB();
-  const pendDep=DB.transactions.filter(t=>t.type==='deposit'&&t.status==='pending').length;
-  const pendWd=DB.transactions.filter(t=>t.type==='withdrawal'&&t.status==='pending').length;
-  const pendVerif=DB.users.filter(u=>u.verificationStatus==='pending').length;
-  document.getElementById('nb-deps').style.display=pendDep>0?'inline-block':'none';
-  document.getElementById('nb-wds').style.display=pendWd>0?'inline-block':'none';
-  document.getElementById('nb-verifs').style.display=pendVerif>0?'inline-block':'none';
-}
-
-/* ═════════════════════════════
-   DASHBOARD
-═════════════════════════════ */
-function renderDash(){
-  DB=loadDB();
-  const users=DB.users||[];
-  const txs=DB.transactions||[];
-  const totalDep=txs.filter(t=>t.type==='deposit'&&t.status==='approved').reduce((s,t)=>s+t.amount,0);
-  const totalWd=txs.filter(t=>t.type==='withdrawal'&&t.status==='approved').reduce((s,t)=>s+t.amount,0);
-  const pendDep=txs.filter(t=>t.type==='deposit'&&t.status==='pending').length;
-  const pendWd=txs.filter(t=>t.type==='withdrawal'&&t.status==='pending').length;
-  const pendVerif=users.filter(u=>u.verificationStatus==='pending').length;
-  const orders=users.reduce((s,u)=>(u.scripts||[]).length+s,0);
-  const totalRefs=users.reduce((s,u)=>(u.referrals||[]).length+s,0);
-  setText('d-users',users.length);
-  setText('d-balance','$'+totalDep.toFixed(2));
-  setText('d-withdrawn','$'+totalWd.toFixed(2));
-  setText('d-pending-dep',pendDep);
-  setText('d-pending-wd',pendWd);
-  setText('d-pending-verif',pendVerif);
-  setText('d-orders',orders);
-  setText('d-refs',totalRefs);
-  // recent txs
-  const el=document.getElementById('dash-recent-tx');
-  if(!txs.length){el.innerHTML='<div class="empty"><div class="empty-icon">📋</div>No transactions yet.</div>';return;}
-  el.innerHTML=`<table><thead><tr><th>ID</th><th>USER</th><th>TYPE</th><th>AMOUNT</th><th>METHOD</th><th>STATUS</th><th>DATE</th><th>ACTION</th></tr></thead><tbody>`+
-    txs.slice(0,10).map(t=>`<tr>
-      <td>${t.id}</td>
-      <td>${t.userName||'-'}</td>
-      <td style="color:${t.type==='deposit'?'var(--g)':t.type==='withdrawal'?'var(--r)':'var(--b)'}">${t.type.toUpperCase()}</td>
-      <td>$${typeof t.amount==='number'?t.amount.toFixed(2):t.amount}</td>
-      <td>${t.method||'-'}</td>
-      <td><span class="badge ${t.status}">${t.status}</span></td>
-      <td>${new Date(t.date).toLocaleDateString()}</td>
-      <td>${t.type==='deposit'&&t.proofImage?`<button class="abtn view" onclick="viewProof('${t.id}')">VIEW PROOF</button>`:'—'}</td>
-    </tr>`).join('')+'</tbody></table>';
-  updateNotifDots();
-}
-
-/* ═════════════════════════════
-   USERS
-═════════════════════════════ */
-function renderUsers(filter=''){
-  DB=loadDB();
-  const el=document.getElementById('users-table');
-  let users=DB.users||[];
-  if(filter)users=users.filter(u=>u.name.toLowerCase().includes(filter)||u.email.toLowerCase().includes(filter));
-  if(!users.length){el.innerHTML='<div class="empty"><div class="empty-icon">👥</div>No users found.</div>';return;}
-  el.innerHTML=`<table><thead><tr><th>NAME</th><th>EMAIL</th><th>BALANCE</th><th>VERIFIED</th><th>SCRIPTS</th><th>JOINED</th><th>STATUS</th><th>ACTIONS</th></tr></thead><tbody>`+
-    users.map(u=>`<tr>
-      <td>${u.name}</td><td>${u.email}</td>
-      <td style="color:var(--g);">$${(u.balance||0).toFixed(2)}</td>
-      <td><span class="badge ${u.verificationStatus==='verified'?'verified':u.verificationStatus==='pending'?'pending':'unverified'}">${u.verificationStatus||'unverified'}</span></td>
-      <td>${(u.scripts||[]).length}</td>
-      <td>${new Date(u.createdAt).toLocaleDateString()}</td>
-      <td><span class="badge ${u.suspended?'suspended':'active'}">${u.suspended?'SUSPENDED':'ACTIVE'}</span></td>
-      <td><div class="action-group">
-        <button class="abtn view" onclick="viewUser('${u.id}')">VIEW</button>
-        <button class="abtn ${u.suspended?'approve':'suspend'}" onclick="toggleSuspend('${u.id}')">${u.suspended?'UNSUSPEND':'SUSPEND'}</button>
-        <button class="abtn del" onclick="deleteUser('${u.id}')">DEL</button>
-      </div></td>
-    </tr>`).join('')+'</tbody></table>';
-}
-function searchUsers(v){renderUsers(v.toLowerCase());}
-
-function viewUser(uid){
-  DB=loadDB();
-  const u=DB.users.find(x=>x.id===uid);
-  if(!u)return;
-  const txs=u.transactions||[];
-  document.getElementById('user-modal-body').innerHTML=`
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:1.5rem;">
-      <div style="background:rgba(0,0,0,.25);border:1px solid var(--border);padding:1rem;">
-        <div style="font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--muted);margin-bottom:.3rem;">NAME</div>
-        <div style="font-family:'Orbitron',sans-serif;font-size:.88rem;color:var(--text);">${u.name}</div>
-      </div>
-      <div style="background:rgba(0,0,0,.25);border:1px solid var(--border);padding:1rem;">
-        <div style="font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--muted);margin-bottom:.3rem;">EMAIL</div>
-        <div style="font-family:'Share Tech Mono',monospace;font-size:.75rem;color:var(--text);">${u.email}</div>
-      </div>
-      <div style="background:rgba(0,255,136,.04);border:1px solid rgba(0,255,136,.18);padding:1rem;">
-        <div style="font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--muted);margin-bottom:.3rem;">BALANCE</div>
-        <div style="font-family:'Orbitron',sans-serif;font-size:1.1rem;color:var(--g);">$${(u.balance||0).toFixed(2)}</div>
-      </div>
-      <div style="background:rgba(0,0,0,.25);border:1px solid var(--border);padding:1rem;">
-        <div style="font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--muted);margin-bottom:.3rem;">REFERRAL CODE</div>
-        <div style="font-family:'Share Tech Mono',monospace;font-size:.75rem;color:var(--b);">${u.referralCode}</div>
-      </div>
-      <div style="background:rgba(0,0,0,.25);border:1px solid var(--border);padding:1rem;">
-        <div style="font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--muted);margin-bottom:.3rem;">VERIFICATION</div>
-        <span class="badge ${u.verificationStatus==='verified'?'verified':u.verificationStatus==='pending'?'pending':'unverified'}">${u.verificationStatus||'unverified'}</span>
-      </div>
-      <div style="background:rgba(0,0,0,.25);border:1px solid var(--border);padding:1rem;">
-        <div style="font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--muted);margin-bottom:.3rem;">TOTAL DEPOSITED</div>
-        <div style="font-family:'Orbitron',sans-serif;font-size:.88rem;color:var(--g);">$${(u.totalDeposited||0).toFixed(2)}</div>
-      </div>
-    </div>
-    <div style="font-family:'Orbitron',sans-serif;font-size:.8rem;color:var(--text);margin-bottom:.8rem;">Scripts (${(u.scripts||[]).length})</div>
-    ${(u.scripts||[]).map(s=>`<div style="background:rgba(0,0,0,.2);border:1px solid var(--border);padding:.7rem 1rem;margin-bottom:.4rem;display:flex;justify-content:space-between;font-family:'Share Tech Mono',monospace;font-size:.72rem;"><span>${s.icon} ${s.name}</span><span class="badge ${s.status}">${s.status}</span></div>`).join('')||'<div style="font-family:Share Tech Mono,monospace;font-size:.72rem;color:var(--muted);">No scripts.</div>'}
-    <div style="font-family:'Orbitron',sans-serif;font-size:.8rem;color:var(--text);margin:.8rem 0;">Recent Transactions</div>
-    ${txs.slice(0,5).map(t=>`<div style="background:rgba(0,0,0,.2);border:1px solid var(--border);padding:.6rem 1rem;margin-bottom:.3rem;display:flex;justify-content:space-between;font-family:'Share Tech Mono',monospace;font-size:.68rem;"><span style="color:${t.type==='deposit'?'var(--g)':'var(--r)'};">${t.type.toUpperCase()}</span><span>$${t.amount}</span><span class="badge ${t.status}">${t.status}</span><span style="color:var(--muted);">${new Date(t.date).toLocaleDateString()}</span></div>`).join('')||'<div style="font-family:Share Tech Mono,monospace;font-size:.72rem;color:var(--muted);">No transactions.</div>'}
-  `;
-  document.getElementById('user-modal').classList.add('open');
-}
-
-function toggleSuspend(uid){
-  DB=loadDB();
-  const u=DB.users.find(x=>x.id===uid);
-  if(!u)return;
-  u.suspended=!u.suspended;
-  saveDB(DB);renderUsers();
-  addLog(u.suspended?'User Suspended':'User Unsuspended',u.email);
-  showToast(u.suspended?'User suspended.':'User unsuspended.','green');
-}
-
-function deleteUser(uid){
-  if(!confirm('Delete this user? This cannot be undone.'))return;
-  DB=loadDB();
-  const u=DB.users.find(x=>x.id===uid);
-  DB.users=DB.users.filter(x=>x.id!==uid);
-  DB.transactions=DB.transactions.filter(x=>x.userId!==uid);
-  saveDB(DB);renderUsers();renderDash();
-  addLog('User Deleted',u?u.email:'');
-  showToast('User deleted.','red');
-}
-
-/* ═════════════════════════════
-   DEPOSITS
-═════════════════════════════ */
-function renderDeposits(){
-  DB=loadDB();
-  const filter=document.getElementById('dep-filter')?.value||'all';
-  const el=document.getElementById('deposits-table');
-  let txs=(DB.transactions||[]).filter(t=>t.type==='deposit');
-  if(filter!=='all')txs=txs.filter(t=>t.status===filter);
-  if(!txs.length){el.innerHTML='<div class="empty"><div class="empty-icon">💰</div>No deposits found.</div>';return;}
-  el.innerHTML=`<table><thead><tr><th>ID</th><th>USER</th><th>AMOUNT</th><th>METHOD</th><th>STATUS</th><th>DATE</th><th>ACTIONS</th></tr></thead><tbody>`+
-    txs.map(t=>`<tr>
-      <td>${t.id}</td><td>${t.userName}<br/><span style="color:var(--muted);font-size:.6rem;">${t.userEmail}</span></td>
-      <td style="color:var(--g);font-family:'Orbitron',sans-serif;">$${t.amount.toFixed(2)}</td>
-      <td>${t.method==='binance'?'🟡 Binance':'🔷 TRC20'}</td>
-      <td><span class="badge ${t.status}">${t.status}</span></td>
-      <td>${new Date(t.date).toLocaleDateString()}</td>
-      <td><div class="action-group">
-        ${t.proofImage?`<button class="abtn view" onclick="viewProof('${t.id}')">PROOF</button>`:''}
-        ${t.status==='pending'?`<button class="abtn approve" onclick="approveDeposit('${t.id}')">APPROVE</button><button class="abtn decline" onclick="declineDeposit('${t.id}')">DECLINE</button>`:''}
-      </div></td>
-    </tr>`).join('')+'</tbody></table>';
-}
-
-function viewProof(txId){
-  DB=loadDB();
-  const tx=DB.transactions.find(t=>t.id===txId);
-  if(!tx||!tx.proofImage)return;
-  document.getElementById('img-modal-title').textContent='📸 Payment Proof — '+tx.id;
-  document.getElementById('img-modal-body').innerHTML=`
-    <img src="${tx.proofImage}" class="img-viewer" alt="Payment Proof"/>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem;font-family:'Share Tech Mono',monospace;font-size:.72rem;margin-top:.8rem;">
-      <div style="background:rgba(0,0,0,.25);border:1px solid var(--border);padding:.8rem;"><div style="color:var(--muted);margin-bottom:.2rem;">USER</div><div style="color:var(--text);">${tx.userName}</div></div>
-      <div style="background:rgba(0,0,0,.25);border:1px solid var(--border);padding:.8rem;"><div style="color:var(--muted);margin-bottom:.2rem;">AMOUNT</div><div style="color:var(--g);font-family:'Orbitron',sans-serif;">$${tx.amount}</div></div>
-      <div style="background:rgba(0,0,0,.25);border:1px solid var(--border);padding:.8rem;"><div style="color:var(--muted);margin-bottom:.2rem;">METHOD</div><div>${tx.method==='binance'?'🟡 Binance':'🔷 TRC20'}</div></div>
-      <div style="background:rgba(0,0,0,.25);border:1px solid var(--border);padding:.8rem;"><div style="color:var(--muted);margin-bottom:.2rem;">STATUS</div><span class="badge ${tx.status}">${tx.status}</span></div>
-    </div>
-    ${tx.status==='pending'?`<div style="display:flex;gap:.8rem;margin-top:1.2rem;">
-      <button class="save-btn" style="flex:1;" onclick="approveDeposit('${tx.id}');closeModal('img-modal')">✅ APPROVE</button>
-      <button class="danger-btn" style="flex:1;" onclick="declineDeposit('${tx.id}');closeModal('img-modal')">❌ DECLINE</button>
-    </div>`:''}
-  `;
-  document.getElementById('img-modal').classList.add('open');
-}
-
-function approveDeposit(txId){
-  DB=loadDB();
-  const tx=DB.transactions.find(t=>t.id===txId);
-  if(!tx||tx.status!=='pending'){showToast('Already processed.','red');return;}
-  tx.status='approved';
-  const user=DB.users.find(u=>u.id===tx.userId);
-  if(user){user.balance+=tx.amount;user.totalDeposited=(user.totalDeposited||0)+tx.amount;
-    const utx=user.transactions.find(t=>t.id===txId);if(utx)utx.status='approved';
-  }
-  saveDB(DB);renderDeposits();renderDash();updateNotifDots();
-  addLog('Deposit Approved',`$${tx.amount} for ${tx.userName}`);
-  showToast('✓ Deposit approved! $'+tx.amount+' added to user balance.','green');
-}
-
-function declineDeposit(txId){
-  DB=loadDB();
-  const tx=DB.transactions.find(t=>t.id===txId);
-  if(!tx||tx.status!=='pending'){showToast('Already processed.','red');return;}
-  tx.status='declined';
-  const user=DB.users.find(u=>u.id===tx.userId);
-  if(user){const utx=user.transactions.find(t=>t.id===txId);if(utx)utx.status='declined';}
-  saveDB(DB);renderDeposits();renderDash();updateNotifDots();
-  addLog('Deposit Declined',`$${tx.amount} for ${tx.userName}`);
-  showToast('Deposit declined.','red');
-}
-
-/* ═════════════════════════════
-   WITHDRAWALS
-═════════════════════════════ */
-function renderWithdrawals(){
-  DB=loadDB();
-  const filter=document.getElementById('wd-filter')?.value||'all';
-  const el=document.getElementById('withdrawals-table');
-  let txs=(DB.transactions||[]).filter(t=>t.type==='withdrawal');
-  if(filter!=='all')txs=txs.filter(t=>t.status===filter);
-  if(!txs.length){el.innerHTML='<div class="empty"><div class="empty-icon">💸</div>No withdrawals found.</div>';return;}
-  el.innerHTML=`<table><thead><tr><th>ID</th><th>USER</th><th>AMOUNT</th><th>METHOD</th><th>ADDRESS</th><th>STATUS</th><th>DATE</th><th>ACTIONS</th></tr></thead><tbody>`+
-    txs.map(t=>`<tr>
-      <td>${t.id}</td><td>${t.userName}</td>
-      <td style="color:var(--r);font-family:'Orbitron',sans-serif;">$${t.amount.toFixed(2)}</td>
-      <td>${t.method==='binance'?'🟡 Binance':'🔷 TRC20'}</td>
-      <td style="font-size:.65rem;max-width:120px;word-break:break-all;">${t.address||'-'}</td>
-      <td><span class="badge ${t.status}">${t.status}</span></td>
-      <td>${new Date(t.date).toLocaleDateString()}</td>
-      <td><div class="action-group">
-        ${t.status==='pending'?`<button class="abtn approve" onclick="approveWithdraw('${t.id}')">APPROVE</button><button class="abtn decline" onclick="declineWithdraw('${t.id}')">DECLINE</button>`:'—'}
-      </div></td>
-    </tr>`).join('')+'</tbody></table>';
-}
-
-function approveWithdraw(txId){
-  DB=loadDB();
-  const tx=DB.transactions.find(t=>t.id===txId);
-  if(!tx||tx.status!=='pending'){showToast('Already processed.','red');return;}
-  tx.status='approved';
-  const user=DB.users.find(u=>u.id===tx.userId);
-  if(user){const utx=user.transactions.find(t=>t.id===txId);if(utx)utx.status='approved';}
-  saveDB(DB);renderWithdrawals();renderDash();updateNotifDots();
-  addLog('Withdrawal Approved',`$${tx.amount} for ${tx.userName}`);
-  showToast('✓ Withdrawal approved!','green');
-}
-
-function declineWithdraw(txId){
-  DB=loadDB();
-  const tx=DB.transactions.find(t=>t.id===txId);
-  if(!tx||tx.status!=='pending'){showToast('Already processed.','red');return;}
-  tx.status='declined';
-  // refund balance
-  const user=DB.users.find(u=>u.id===tx.userId);
-  if(user){user.balance+=tx.amount;const utx=user.transactions.find(t=>t.id===txId);if(utx)utx.status='declined';}
-  saveDB(DB);renderWithdrawals();renderDash();updateNotifDots();
-  addLog('Withdrawal Declined & Refunded',`$${tx.amount} for ${tx.userName}`);
-  showToast('Withdrawal declined. Balance refunded.','red');
-}
-
-/* ═════════════════════════════
-   VERIFICATIONS
-═════════════════════════════ */
-function renderVerifications(){
-  DB=loadDB();
-  const el=document.getElementById('verif-list');
-  const pending=DB.users.filter(u=>u.verificationStatus==='pending'&&u.verificationImages);
-  const all=DB.users.filter(u=>u.verificationImages&&u.verificationImages.front);
-  if(!all.length){el.innerHTML='<div class="empty"><div class="empty-icon">🪪</div>No verification submissions.</div>';return;}
-  el.innerHTML=all.map(u=>`
-    <div class="tbl-wrap" style="margin-bottom:1rem;">
-      <div class="tbl-head">
-        <div>
-          <span class="tbl-title">${u.name}</span>
-          <span style="font-family:'Share Tech Mono',monospace;font-size:.65rem;color:var(--muted);margin-left:.8rem;">${u.email}</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:.8rem;">
-          <span class="badge ${u.verificationStatus}">${u.verificationStatus}</span>
-          <span style="font-family:'Share Tech Mono',monospace;font-size:.62rem;color:var(--muted);">Doc: ${u.verificationImages.docType||'ID'}</span>
-          <span style="font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--muted);">${u.verificationImages.submittedAt?new Date(u.verificationImages.submittedAt).toLocaleDateString():''}</span>
-        </div>
-      </div>
-      <div style="padding:1.2rem;">
-        <div class="img-pair">
-          <div>
-            <div style="font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--g);margin-bottom:.4rem;letter-spacing:.15em;">FRONT SIDE</div>
-            <img src="${u.verificationImages.front}" class="img-viewer" style="max-height:200px;" alt="Front"/>
-          </div>
-          <div>
-            <div style="font-family:'Share Tech Mono',monospace;font-size:.6rem;color:var(--g);margin-bottom:.4rem;letter-spacing:.15em;">BACK SIDE</div>
-            <img src="${u.verificationImages.back}" class="img-viewer" style="max-height:200px;" alt="Back"/>
-          </div>
-        </div>
-        ${u.verificationStatus==='pending'?`<div style="display:flex;gap:.8rem;margin-top:1rem;">
-          <button class="save-btn" style="flex:1;" onclick="approveVerif('${u.id}')">✅ APPROVE VERIFICATION</button>
-          <button class="danger-btn" style="flex:1;" onclick="declineVerif('${u.id}')">❌ DECLINE</button>
-        </div>`:'<div style="font-family:Share Tech Mono,monospace;font-size:.72rem;color:var(--muted);margin-top:.8rem;">Already processed.</div>'}
-      </div>
-    </div>
-  `).join('');
-}
-
-function approveVerif(uid){
-  DB=loadDB();
-  const u=DB.users.find(x=>x.id===uid);
-  if(!u)return;
-  u.verificationStatus='verified';
-  saveDB(DB);renderVerifications();renderDash();updateNotifDots();
-  addLog('Verification Approved',u.email);
-  showToast('✓ '+u.name+' verified!','green');
-}
-
-function declineVerif(uid){
-  DB=loadDB();
-  const u=DB.users.find(x=>x.id===uid);
-  if(!u)return;
-  u.verificationStatus='declined';
-  saveDB(DB);renderVerifications();renderDash();updateNotifDots();
-  addLog('Verification Declined',u.email);
-  showToast('Verification declined.','red');
-}
-
-/* ═════════════════════════════
-   ORDERS
-═════════════════════════════ */
-function renderOrders(){
-  DB=loadDB();
-  const el=document.getElementById('orders-table');
-  let orders=[];
-  DB.users.forEach(u=>(u.scripts||[]).forEach(s=>orders.push({...s,userName:u.name,userEmail:u.email})));
-  if(!orders.length){el.innerHTML='<div class="empty"><div class="empty-icon">🛍️</div>No orders yet.</div>';return;}
-  el.innerHTML=`<table><thead><tr><th>ORDER ID</th><th>USER</th><th>PRODUCT</th><th>STATUS</th><th>PURCHASED</th><th>EXPIRES</th></tr></thead><tbody>`+
-    orders.map(o=>`<tr>
-      <td>${o.id}</td><td>${o.userName}</td>
-      <td>${o.icon} ${o.name}</td>
-      <td><span class="badge ${o.status}">${o.status}</span></td>
-      <td>${new Date(o.purchasedAt).toLocaleDateString()}</td>
-      <td>${o.expiresAt?new Date(o.expiresAt).toLocaleDateString():'⭐ Lifetime'}</td>
-    </tr>`).join('')+'</tbody></table>';
-}
-
-/* ═════════════════════════════
-   PRODUCTS
-═════════════════════════════ */
-function renderProducts(){
-  DB=loadDB();
-  const el=document.getElementById('products-list');
-  el.innerHTML=(DB.products||[]).map((p,i)=>`
-    <div class="prod-editor">
-      <div class="prod-editor-head">
-        <span class="prod-editor-name">${p.icon} ${p.name}</span>
-        <div class="action-group">
-          <button class="abtn edit" onclick="editProduct('${p.id}')">EDIT</button>
-          <button class="abtn del" onclick="deleteProduct('${p.id}')">DELETE</button>
-        </div>
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;font-family:'Share Tech Mono',monospace;font-size:.7rem;color:var(--muted);">
-        <div>PRICE: <span style="color:var(--g);">$${p.price}</span></div>
-        <div>PERIOD: <span style="color:var(--text);">${p.period}</span></div>
-        <div>BADGE: <span style="color:var(--b);">${p.badge}</span></div>
-        <div>DESC: <span style="color:var(--text);">${p.desc.slice(0,30)}...</span></div>
-      </div>
-    </div>
-  `).join('');
-}
-
-function editProduct(pid){
-  DB=loadDB();
-  const p=DB.products.find(x=>x.id===pid);
-  if(!p)return;
-  document.getElementById('prod-modal-title').textContent='✏️ EDIT: '+p.name;
-  document.getElementById('prod-modal-body').innerHTML=`
-    <div class="fgroup"><label>NAME</label><input type="text" id="ep-name" value="${p.name}"/></div>
-    <div class="fgroup"><label>ICON (emoji)</label><input type="text" id="ep-icon" value="${p.icon}"/></div>
-    <div class="fgroup"><label>DESCRIPTION</label><textarea id="ep-desc" rows="3">${p.desc}</textarea></div>
-    <div class="fgroup"><label>PRICE ($)</label><input type="number" id="ep-price" value="${p.price}"/></div>
-    <div class="fgroup"><label>PERIOD</label><select id="ep-period"><option ${p.period==='month'?'selected':''}>month</option><option ${p.period==='lifetime'?'selected':''}>lifetime</option><option ${p.period==='year'?'selected':''}>year</option></select></div>
-    <div class="fgroup"><label>BADGE TEXT</label><input type="text" id="ep-badge" value="${p.badge}"/></div>
-    <button class="save-btn" onclick="saveProduct('${pid}')">💾 SAVE PRODUCT</button>
-  `;
-  document.getElementById('prod-modal').classList.add('open');
-}
-
-function saveProduct(pid){
-  DB=loadDB();
-  const p=DB.products.find(x=>x.id===pid);
-  if(!p)return;
-  p.name=document.getElementById('ep-name').value;
-  p.icon=document.getElementById('ep-icon').value;
-  p.desc=document.getElementById('ep-desc').value;
-  p.price=parseFloat(document.getElementById('ep-price').value)||p.price;
-  p.period=document.getElementById('ep-period').value;
-  p.badge=document.getElementById('ep-badge').value;
-  saveDB(DB);closeModal('prod-modal');renderProducts();
-  addLog('Product Updated',p.name);
-  showToast('✓ Product saved!','green');
-}
-
-function addProduct(){
-  document.getElementById('prod-modal-title').textContent='➕ ADD PRODUCT';
-  document.getElementById('prod-modal-body').innerHTML=`
-    <div class="fgroup"><label>NAME</label><input type="text" id="ep-name" placeholder="Product name"/></div>
-    <div class="fgroup"><label>ICON (emoji)</label><input type="text" id="ep-icon" placeholder="⚡"/></div>
-    <div class="fgroup"><label>DESCRIPTION</label><textarea id="ep-desc" rows="3" placeholder="Description..."></textarea></div>
-    <div class="fgroup"><label>PRICE ($)</label><input type="number" id="ep-price" placeholder="30"/></div>
-    <div class="fgroup"><label>PERIOD</label><select id="ep-period"><option>month</option><option>lifetime</option><option>year</option></select></div>
-    <div class="fgroup"><label>BADGE TEXT</label><input type="text" id="ep-badge" placeholder="★ NEW"/></div>
-    <button class="save-btn" onclick="createProduct()">➕ CREATE PRODUCT</button>
-  `;
-  document.getElementById('prod-modal').classList.add('open');
-}
-
-function createProduct(){
-  DB=loadDB();
-  const newP={id:'p'+Date.now(),name:document.getElementById('ep-name').value,icon:document.getElementById('ep-icon').value||'⚡',desc:document.getElementById('ep-desc').value,price:parseFloat(document.getElementById('ep-price').value)||10,period:document.getElementById('ep-period').value,badge:document.getElementById('ep-badge').value||'NEW',badgeClass:'g',btnClass:'g'};
-  DB.products.push(newP);
-  saveDB(DB);closeModal('prod-modal');renderProducts();
-  addLog('Product Created',newP.name);
-  showToast('✓ Product created!','green');
-}
-
-function deleteProduct(pid){
-  if(!confirm('Delete this product?'))return;
-  DB=loadDB();
-  const p=DB.products.find(x=>x.id===pid);
-  DB.products=DB.products.filter(x=>x.id!==pid);
-  saveDB(DB);renderProducts();
-  addLog('Product Deleted',p?p.name:'');
-  showToast('Product deleted.','red');
-}
-
-/* ═════════════════════════════
-   BALANCE ADJUST
-═════════════════════════════ */
-function renderBalanceSelect(){
-  DB=loadDB();
-  const sel=document.getElementById('bal-user');
-  sel.innerHTML='<option value="">Select user...</option>'+DB.users.map(u=>`<option value="${u.id}">${u.name} (${u.email}) — $${(u.balance||0).toFixed(2)}</option>`).join('');
-}
-
-function adjustBalance(){
-  const uid=document.getElementById('bal-user').value;
-  const action=document.getElementById('bal-action').value;
-  const amt=parseFloat(document.getElementById('bal-amount').value);
-  const note=document.getElementById('bal-note').value||'Admin adjustment';
-  if(!uid){showToast('Select a user!','red');return;}
-  if(isNaN(amt)||amt<=0){showToast('Enter valid amount!','red');return;}
-  DB=loadDB();
-  const u=DB.users.find(x=>x.id===uid);
-  if(!u)return;
-  const old=u.balance;
-  if(action==='add')u.balance+=amt;
-  else if(action==='remove'){if(u.balance<amt){showToast('User has insufficient balance!','red');return;}u.balance-=amt;}
-  else if(action==='set')u.balance=amt;
-  const tx={id:'ADJ'+Date.now(),type:'adjustment',amount:amt,description:note,status:'completed',date:new Date().toISOString()};
-  u.transactions.unshift(tx);
-  saveDB(DB);renderBalanceSelect();renderDash();
-  addLog('Balance Adjusted',`${u.name}: $${old.toFixed(2)} → $${u.balance.toFixed(2)}`);
-  showToast(`✓ Balance updated: $${u.balance.toFixed(2)}`,'green');
-  document.getElementById('bal-amount').value='';
-  document.getElementById('bal-note').value='';
-}
-
-/* ═════════════════════════════
-   SETTINGS
-═════════════════════════════ */
-function loadSettings(){
-  DB=loadDB();
-  const s=DB.settings;
-  setVal('s-min-dep',s.minDeposit);setVal('s-max-dep',s.maxDeposit);
-  setVal('s-min-wd',s.minWithdraw);setVal('s-max-wd',s.maxWithdraw);
-  setVal('s-ref-comm',s.refCommission);
-  setVal('s-bin-id',s.binanceId||'505638805');
-  setVal('s-bin-nick',s.binanceNick||'AHMAD_BHAI_786');
-  setVal('s-trc',s.trc20||'TLvd3Q1UpE8Cio8GxrqZzemSVWe8cH5Rxu');
-  setVal('s-bin-qr',s.binanceQr||'');setVal('s-trc-qr',s.trc20Qr||'');
-  setVal('s-adm-user',DB.admin.username);
-  // toggles
-  setToggle('tog-reg',s.allowReg!==false);
-  setToggle('tog-dep',s.allowDep!==false);
-  setToggle('tog-wd',s.allowWd!==false);
-  setToggle('tog-maint',s.maintenance===true);
-}
-function saveLimits(){
-  DB=loadDB();
-  DB.settings.minDeposit=parseFloat(document.getElementById('s-min-dep').value)||10;
-  DB.settings.maxDeposit=parseFloat(document.getElementById('s-max-dep').value)||50000;
-  DB.settings.minWithdraw=parseFloat(document.getElementById('s-min-wd').value)||10;
-  DB.settings.maxWithdraw=parseFloat(document.getElementById('s-max-wd').value)||50000;
-  DB.settings.refCommission=parseFloat(document.getElementById('s-ref-comm').value)||10;
-  saveDB(DB);addLog('Settings Updated','Transaction limits');showToast('✓ Limits saved!','green');
-}
-function savePayment(){
-  DB=loadDB();
-  DB.settings.binanceId=document.getElementById('s-bin-id').value||DB.settings.binanceId;
-  DB.settings.binanceNick=document.getElementById('s-bin-nick').value||DB.settings.binanceNick;
-  DB.settings.trc20=document.getElementById('s-trc').value||DB.settings.trc20;
-  const bq=document.getElementById('s-bin-qr').value;
-  const tq=document.getElementById('s-trc-qr').value;
-  if(bq)DB.settings.binanceQr=bq;
-  if(tq)DB.settings.trc20Qr=tq;
-  saveDB(DB);addLog('Payment Details Updated','');showToast('✓ Payment details saved!','green');
-}
-function saveAdminCreds(){
-  const u=document.getElementById('s-adm-user').value.trim();
-  const p=document.getElementById('s-adm-pw').value;
-  const p2=document.getElementById('s-adm-pw2').value;
-  if(!u){showToast('Username cannot be empty!','red');return;}
-  if(p&&p!==p2){showToast('Passwords do not match!','red');return;}
-  DB=loadDB();
-  DB.admin.username=u;
-  if(p)DB.admin.password=p;
-  saveDB(DB);
-  document.getElementById('s-adm-pw').value='';
-  document.getElementById('s-adm-pw2').value='';
-  addLog('Admin Credentials Updated','');showToast('✓ Admin credentials saved!','green');
-}
-function saveSetting(key,val){
-  DB=loadDB();DB.settings[key]=val;saveDB(DB);
-  addLog('Toggle Changed',key+': '+val);
-  showToast('✓ Setting saved!','green');
-}
-function setToggle(id,on){const el=document.getElementById(id);if(el){el.classList.toggle('on',on);}}
-
-/* ═════════════════════════════
-   LOGS
-═════════════════════════════ */
-function renderLogs(){
-  DB=loadDB();
-  const el=document.getElementById('logs-table');
-  const logs=DB.logs||[];
-  if(!logs.length){el.innerHTML='<div class="empty"><div class="empty-icon">📋</div>No logs yet.</div>';return;}
-  el.innerHTML=`<table><thead><tr><th>ID</th><th>ACTION</th><th>DETAIL</th><th>TIME</th></tr></thead><tbody>`+
-    logs.map(l=>`<tr><td>${l.id}</td><td style="color:var(--g);">${l.action}</td><td>${l.detail||'-'}</td><td>${new Date(l.time).toLocaleString()}</td></tr>`).join('')+
-    '</tbody></table>';
-}
-function clearLogs(){
-  if(!confirm('Clear all logs?'))return;
-  DB=loadDB();DB.logs=[];saveDB(DB);renderLogs();showToast('Logs cleared.','red');
-}
-/* ═════════════════════════════
-   SYSTEM UTILS
-═════════════════════════════ */
-function refreshAll() {
-    DB = loadDB();
-    renderDash();
-    updateNotifDots();
-}
-
-function updateNotifDots() {
-    const pendDep = DB.transactions.filter(t => t.type === 'deposit' && t.status === 'pending').length;
-    const pendWd = DB.transactions.filter(t => t.type === 'withdrawal' && t.status === 'pending').length;
-    const pendVerif = DB.users.filter(u => u.verificationStatus === 'pending').length;
-    
-    if(document.getElementById('nb-deps')) document.getElementById('nb-deps').style.display = pendDep > 0 ? 'inline-block' : 'none';
-    if(document.getElementById('nb-wds')) document.getElementById('nb-wds').style.display = pendWd > 0 ? 'inline-block' : 'none';
-    if(document.getElementById('nb-verifs')) document.getElementById('nb-verifs').style.display = pendVerif > 0 ? 'inline-block' : 'none';
-}
-
-function renderDash() {
-    const users = DB.users || [];
-    const txs = DB.transactions || [];
-    
-    const totalDep = txs.filter(t => t.type === 'deposit' && t.status === 'approved').reduce((s, t) => s + (Number(t.amount) || 0), 0);
-    
-    if(document.getElementById('d-users')) document.getElementById('d-users').textContent = users.length;
-    if(document.getElementById('d-balance')) document.getElementById('d-balance').textContent = '$' + totalDep.toFixed(2);
-}
-
-function aTab(el, secId) {
-    document.querySelectorAll('.sb-nav a').forEach(a => a.classList.remove('act'));
-    if (el) el.classList.add('act');
-    document.querySelectorAll('.dsec').forEach(s => s.classList.remove('act'));
-    const sec = document.getElementById(secId);
-    if (sec) sec.classList.add('act');
-}
-
-// Global Log Helper
-function addLog(action, detail = '') {
-    DB.logs.unshift({ id: 'L' + Date.now(), action, detail, time: new Date().toISOString() });
-    saveDB(DB);
-}
-
-function saveDB(db) {
-    localStorage.setItem('ahmadDevDB', JSON.stringify(db));
-}
-
-// Initial Load
 window.addEventListener('load', () => {
     document.getElementById('loadingOverlay').style.display = 'none';
-    console.log("System Ready.");
 });
-window.addEventListener('load',()=>{document.getElementById('loadingOverlay').style.display='none';});
 </script>
 </body>
-                                                 </html>
+</html>
