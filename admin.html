@@ -443,86 +443,141 @@ tr:hover td{background:rgba(0,255,136,.015);}
   /* ═════════════════════════════
    DB & STATE - FIXED
 ═════════════════════════════ */
-function loadDB(){
+/* ═════════════════════════════
+   DB & STATE - FIXED BY AHMADDEV
+═════════════════════════════ */
+function loadDB() {
     try {
         let data = localStorage.getItem('ahmadDevDB');
         return data ? JSON.parse(data) : initDB();
-    } catch(e) {
+    } catch (e) {
         return initDB();
     }
 }
 
-function initDB(){
+function initDB() {
     const initial = {
-        users:[],
-        transactions:[],
-        products:[
-            {id:'p1',name:'Quotex Scripts',icon:'⚡',desc:'Magic Script + Fast Pro suite. Android & PC.',price:30,period:'month',badge:'★ POPULAR',badgeClass:'g',btnClass:'g'},
-            {id:'p2',name:'ID Verify Bot',icon:'🔒',desc:'Custom Quotex ID verification bot. Lifetime.',price:40,period:'lifetime',badge:'💎 LIFETIME',badgeClass:'y',btnClass:'y'},
-            {id:'p3',name:'Trading Bots',icon:'🚀',desc:'Auto trading bot. Set and forget.',price:10,period:'month',badge:'🤖 AUTO',badgeClass:'b',btnClass:'b'},
+        users: [],
+        transactions: [],
+        products: [
+            { id: 'p1', name: 'Quotex Scripts', icon: '⚡', desc: 'Magic Script + Fast Pro suite.', price: 30, period: 'month', badge: '★ POPULAR', badgeClass: 'g', btnClass: 'g' },
+            { id: 'p2', name: 'ID Verify Bot', icon: '🔒', desc: 'Custom Quotex ID verification bot.', price: 40, period: 'lifetime', badge: '💎 LIFETIME', badgeClass: 'y', btnClass: 'y' },
+            { id: 'p3', name: 'Trading Bots', icon: '🚀', desc: 'Auto trading bot. Set and forget.', price: 10, period: 'month', badge: '🤖 AUTO', badgeClass: 'b', btnClass: 'b' }
         ],
-        settings:{
-            minDeposit:10,maxDeposit:50000,minWithdraw:10,maxWithdraw:50000,refCommission:10,
-            allowReg:true,allowDep:true,allowWd:true,maintenance:false,
-            binanceId:'505638805',binanceNick:'AHMAD_BHAI_786',
-            trc20:'TLvd3Q1UpE8Cio8GxrqZzemSVWe8cH5Rxu',
-            binanceQr:'https://i.ibb.co/d0tqPPnv/d505c6b3e66d.png',
-            trc20Qr:'https://i.ibb.co/SwNqpycL/trc-qx.jpg'
+        settings: {
+            minDeposit: 10, maxDeposit: 50000, minWithdraw: 10, maxWithdraw: 50000,
+            refCommission: 10, allowReg: true, allowDep: true, allowWd: true,
+            maintenance: false, binanceId: '505638805', binanceNick: 'AHMAD_BHAI_786',
+            trc20: 'TLvd3Q1UpE8Cio8GxrqZzemSVWe8cH5Rxu',
+            binanceQr: 'https://i.ibb.co/d0tqPPnv/d505c6b3e66d.png',
+            trc20Qr: 'https://i.ibb.co/SwNqpycL/trc-qx.jpg'
         },
-        admin:{username:'admin',password:'ahmad786admin'},
-        logs:[]
+        admin: { username: 'admin', password: 'ahmad786admin' },
+        logs: []
     };
     localStorage.setItem('ahmadDevDB', JSON.stringify(initial));
     return initial;
 }
 
-function saveDB(db){localStorage.setItem('ahmadDevDB',JSON.stringify(db));}
-
-// Global Variables
 let DB = loadDB();
 let adminLoggedIn = false;
-let adminLogs = [];
 
+/* ═════════════════════════════
+   AUTH & NAVIGATION
+═════════════════════════════ */
+function doAdminLogin() {
+    const u = document.getElementById('adm-user').value.trim();
+    const p = document.getElementById('adm-pw').value;
+    const err = document.getElementById('login-err');
+    
+    // Ensure we have the latest DB data
+    DB = loadDB();
 
-function addLog(action,detail=''){
-  DB=loadDB();
-  if(!DB.logs)DB.logs=[];
-  DB.logs.unshift({id:'L'+Date.now(),action,detail,time:new Date().toISOString()});
-  if(DB.logs.length>200)DB.logs=DB.logs.slice(0,200);
-  saveDB(DB);
+    if (!u || !p) {
+        err.textContent = 'Please enter both username and password.';
+        err.classList.add('show');
+        return;
+    }
+
+    if (u === DB.admin.username && p === DB.admin.password) {
+        adminLoggedIn = true;
+        document.getElementById('page-login').classList.remove('active');
+        document.getElementById('page-admin').classList.add('active');
+        refreshAll();
+        showToast('Login Successful!', 'green');
+    } else {
+        err.textContent = 'Invalid Admin Credentials!';
+        err.classList.add('show');
+    }
+}
+
+function adminLogout() {
+    adminLoggedIn = false;
+    document.getElementById('page-admin').classList.remove('active');
+    document.getElementById('page-login').classList.add('active');
+    showToast('Logged out.', 'red');
+}
+
+function showToast(msg, type = 'green') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast show ' + type;
+    setTimeout(() => t.className = 'toast', 3000);
 }
 
 /* ═════════════════════════════
-   AUTH
+   SYSTEM UTILS
 ═════════════════════════════ */
-function doAdminLogin(){
-  const u = document.getElementById('adm-user').value.trim();
-  const p = document.getElementById('adm-pw').value;
-  const err = document.getElementById('login-err');
-  
-  // Reload DB to make sure we have latest credentials
-  DB = loadDB();
-  
-  if(!u || !p){
-    err.textContent = 'Fill all fields.';
-    err.classList.add('show');
-    return;
-  }
-  
-  if(u === DB.admin.username && p === DB.admin.password){
-    adminLoggedIn = true;
-    // Direct display change instead of calling showPage (just in case)
-    document.getElementById('page-login').classList.remove('active');
-    document.getElementById('page-admin').classList.add('active');
-    
-    refreshAll();
-    addLog('Admin Login','Successful');
-    showToast('Welcome Ahmad Bhai!','green');
-  } else {
-    err.textContent = 'Invalid credentials.';
-    err.classList.add('show');
-  }
+function refreshAll() {
+    DB = loadDB();
+    renderDash();
+    updateNotifDots();
 }
+
+function updateNotifDots() {
+    const pendDep = DB.transactions.filter(t => t.type === 'deposit' && t.status === 'pending').length;
+    const pendWd = DB.transactions.filter(t => t.type === 'withdrawal' && t.status === 'pending').length;
+    const pendVerif = DB.users.filter(u => u.verificationStatus === 'pending').length;
+    
+    if(document.getElementById('nb-deps')) document.getElementById('nb-deps').style.display = pendDep > 0 ? 'inline-block' : 'none';
+    if(document.getElementById('nb-wds')) document.getElementById('nb-wds').style.display = pendWd > 0 ? 'inline-block' : 'none';
+    if(document.getElementById('nb-verifs')) document.getElementById('nb-verifs').style.display = pendVerif > 0 ? 'inline-block' : 'none';
+}
+
+function renderDash() {
+    const users = DB.users || [];
+    const txs = DB.transactions || [];
+    
+    const totalDep = txs.filter(t => t.type === 'deposit' && t.status === 'approved').reduce((s, t) => s + (Number(t.amount) || 0), 0);
+    
+    if(document.getElementById('d-users')) document.getElementById('d-users').textContent = users.length;
+    if(document.getElementById('d-balance')) document.getElementById('d-balance').textContent = '$' + totalDep.toFixed(2);
+}
+
+function aTab(el, secId) {
+    document.querySelectorAll('.sb-nav a').forEach(a => a.classList.remove('act'));
+    if (el) el.classList.add('act');
+    document.querySelectorAll('.dsec').forEach(s => s.classList.remove('act'));
+    const sec = document.getElementById(secId);
+    if (sec) sec.classList.add('act');
+}
+
+// Global Log Helper
+function addLog(action, detail = '') {
+    DB.logs.unshift({ id: 'L' + Date.now(), action, detail, time: new Date().toISOString() });
+    saveDB(DB);
+}
+
+function saveDB(db) {
+    localStorage.setItem('ahmadDevDB', JSON.stringify(db));
+}
+
+// Initial Load
+window.addEventListener('load', () => {
+    document.getElementById('loadingOverlay').style.display = 'none';
+    console.log("System Ready.");
+});
+  
   
 function adminLogout(){adminLoggedIn=false;showPage('page-login');showToast('Logged out.','green');}
 
