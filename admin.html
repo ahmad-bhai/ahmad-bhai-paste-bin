@@ -443,38 +443,53 @@ tr:hover td{background:rgba(0,255,136,.015);}
 /* ═════════════════════════════
    DB & STATE
 ═════════════════════════════ */
-function loadDB(){
-  try {
-    let data = localStorage.getItem('ahmadDevDB');
-    return data ? JSON.parse(data) : initDB();
-  } catch(e) {
-    return initDB();
-  }
+function loadDB() {
+    try {
+        let data = localStorage.getItem('ahmadDevDB');
+        return data ? JSON.parse(data) : initDB();
+    } catch (e) {
+        return initDB();
+    }
 }
 
-function initDB(){
-  let initial = {
-    users: [],
-    transactions: [],
-    products: [
-      {id:'p1', name:'Quotex Scripts', icon:'⚡', desc:'Magic Script + Fast Pro suite. Android & PC.', price:30, period:'month', badge:'★ POPULAR', badgeClass:'g', btnClass:'g'},
-      {id:'p2', name:'ID Verify Bot', icon:'🔒', desc:'Custom Quotex ID verification bot. Lifetime.', price:40, period:'lifetime', badge:'💎 LIFETIME', badgeClass:'y', btnClass:'y'},
-      {id:'p3', name:'Trading Bots', icon:'🚀', desc:'Auto trading bot. Set and forget.', price:10, period:'month', badge:'🤖 AUTO', badgeClass:'b', btnClass:'b'},
-    ],
-    settings: {
-      minDeposit:10, maxDeposit:50000, minWithdraw:10, maxWithdraw:50000, 
-      refCommission:10, allowReg:true, allowDep:true, allowWd:true, 
-      maintenance:false, binanceId:'505638805', binanceNick:'AHMAD_BHAI_786', 
-      trc20:'TLvd3Q1UpE8Cio8GxrqZzemSVWe8cH5Rxu', 
-      binanceQr:'https://i.ibb.co/d0tqPPnv/d505c6b3e66d.png', 
-      trc20Qr:'https://i.ibb.co/SwNqpycL/trc-qx.jpg'
-    },
-    admin: {username:'admin', password:'ahmad786admin'},
-    logs: []
-  };
-  localStorage.setItem('ahmadDevDB', JSON.stringify(initial));
-  return initial;
+function initDB() {
+    const initial = {
+        users: [],
+        transactions: [],
+        products: [
+            { id: 'p1', name: 'Quotex Scripts', icon: '⚡', desc: 'Magic Script + Fast Pro suite. Android & PC.', price: 30, period: 'month', badge: '★ POPULAR', badgeClass: 'g', btnClass: 'g' },
+            { id: 'p2', name: 'ID Verify Bot', icon: '🔒', desc: 'Custom Quotex ID verification bot. Lifetime.', price: 40, period: 'lifetime', badge: '💎 LIFETIME', badgeClass: 'y', btnClass: 'y' },
+            { id: 'p3', name: 'Trading Bots', icon: '🚀', desc: 'Auto trading bot. Set and forget.', price: 10, period: 'month', badge: '🤖 AUTO', badgeClass: 'b', btnClass: 'b' },
+        ],
+        settings: {
+            minDeposit: 10, maxDeposit: 50000, minWithdraw: 10, maxWithdraw: 50000,
+            refCommission: 10, allowReg: true, allowDep: true, allowWd: true,
+            maintenance: false, binanceId: '505638805', binanceNick: 'AHMAD_BHAI_786',
+            trc20: 'TLvd3Q1UpE8Cio8GxrqZzemSVWe8cH5Rxu',
+            binanceQr: 'https://i.ibb.co/d0tqPPnv/d505c6b3e66d.png',
+            trc20Qr: 'https://i.ibb.co/SwNqpycL/trc-qx.jpg'
+        },
+        admin: { username: 'admin', password: 'ahmad786admin' },
+        logs: []
+    };
+    localStorage.setItem('ahmadDevDB', JSON.stringify(initial));
+    return initial;
 }
+
+// Global DB Variable
+let DB = loadDB();
+
+/* ═════════════════════════════
+   ON LOAD FIX
+═════════════════════════════ */
+window.addEventListener('load', () => {
+    // Force hide loading after 1 second if it gets stuck
+    setTimeout(() => {
+        const loader = document.getElementById('loadingOverlay');
+        if (loader) loader.style.display = 'none';
+    }, 1000);
+});
+
 
 
 /* ═════════════════════════════
