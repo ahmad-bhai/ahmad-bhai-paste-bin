@@ -3,7 +3,7 @@ const app = Express();
 
 app.use(Express.json());
 
-const BOT_TOKEN = process.env.BOT_TOKEN || "8062761862:AAEzCXx3jnA3pLjKD53Cy8ocwnkYLpDqhJo";
+const BOT_TOKEN = process.env.BOT_TOKEN || "8719945288:AAFm85KnfXGPEYxQAeYkfMGEBJ_osyapa0M";
 const CHANNEL_LINK = "https://t.me/+CiQ-r2b-tBA4YzM0"; // Apna link yahan badlein
 
 // Telegram Message Sending Helper Function
